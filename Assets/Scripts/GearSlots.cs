@@ -1,0 +1,19 @@
+public enum GearSlots
+{
+    Head,
+    Shoulders,
+    Chest,
+    Gloves,
+    Legs,
+    Boots,
+    MainHand,
+    OffHand,
+    Ring1,
+    Ring2,
+    Trinket1,
+    Trinket2,
+    Neck,
+    Belt,
+    Bracers,
+    Cloak
+}
