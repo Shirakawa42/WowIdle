@@ -6,4 +6,5 @@ public static class Globals
     public static GameManager gameManager = null;
     public static InventoryManager inventoryManager = null;
     public static ItemTooltipManager itemTooltipManager = null;
+    public static StatsPanelManager statsPanelManager = null;
 }

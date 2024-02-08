@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,15 +19,15 @@ public class Stats
         this.armor = armor;
     }
 
-    public Dictionary<string, int> GetAllStats()
+    public (string, int)[] GetAllStats()
     {
-        return new Dictionary<string, int>
+        return new (string, int)[]
         {
-            { "Strength", strength },
-            { "Agility", agility },
-            { "Intelligence", intelligence },
-            { "Stamina", stamina },
-            { "Armor", armor }
+            ( "Strength", strength ),
+            ( "Agility", agility ),
+            ( "Intelligence", intelligence ),
+            ( "Stamina", stamina ),
+            ( "Armor", armor)
         };
     }
 
@@ -41,6 +42,16 @@ public class Stats
             "Stamina" => Color.yellow,
             _ => Color.white,
         };
+    }
+
+    public static Stats operator +(Stats a, Stats b)
+    {
+        return new Stats(a.strength + b.strength, a.agility + b.agility, a.intelligence + b.intelligence, a.stamina + b.stamina, a.armor + b.armor);
+    }
+
+    public static Stats operator -(Stats a, Stats b)
+    {
+        return new Stats(a.strength - b.strength, a.agility - b.agility, a.intelligence - b.intelligence, a.stamina - b.stamina, a.armor - b.armor);
     }
 
 }

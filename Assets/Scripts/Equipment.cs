@@ -7,6 +7,7 @@ public class Equipment : Slotable
     public int itemLevel;
     public Stats stats;
     public Rarities rarity;
+    public Unit equippedUnit;
 
     public override SlotType SlotType { get; set; }
     public override Sprite Icon { get; set; }
@@ -35,14 +36,21 @@ public class Equipment : Slotable
         return tooltipValues;
     }
 
-    public override void OnEquip()
+    public override void OnEquip(Unit unit)
     {
-        //TODO
+        Debug.Log("Equipping " + equipmentName + " to " + unit.unitName);
+        equippedUnit = unit;
+        equippedUnit.stats += stats;
+        equippedUnit.RecalculateUnitStats();
+        Globals.statsPanelManager.UpdateStats(equippedUnit);
     }
 
     public override void OnUnequip()
     {
-        //TODO
+        equippedUnit.stats -= stats;
+        equippedUnit.RecalculateUnitStats();
+        Globals.statsPanelManager.UpdateStats(equippedUnit);
+        equippedUnit = null;
     }
 
     public override void OnPointerEnter(Vector3 slotPosition)

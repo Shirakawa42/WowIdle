@@ -14,10 +14,10 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
     {
         Slotable oldSlotable = this.slotable;
 
-        if (this.slotable != null && equippedSlot)
+        if (equippedSlot)
         {
-            this.slotable.OnUnequip();
-            slotable?.OnEquip();
+            this.slotable?.OnUnequip();
+            slotable?.OnEquip(Globals.selectedHero);
         }
         this.slotable = slotable;
         draggableItem.SetActive(false);

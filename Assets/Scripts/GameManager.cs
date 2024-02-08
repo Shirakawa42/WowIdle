@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        
+        Globals.selectedHero = new Unit("MacLovin", 8, new UnitStats(), new Stats(2, 2, 2, 2, 0));
     }
 
     public void AddItemToInventory()
