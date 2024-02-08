@@ -1,0 +1,20 @@
+public enum SlotType
+{
+    Head,
+    Shoulders,
+    Chest,
+    Gloves,
+    Legs,
+    Boots,
+    MainHand,
+    OffHand,
+    Ring,
+    Trinket,
+    Neck,
+    Belt,
+    Bracers,
+    Cloak,
+    AnyGear,
+    Hero,
+    Enemy
+}
