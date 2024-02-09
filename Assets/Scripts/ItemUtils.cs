@@ -34,6 +34,8 @@ public static class ItemUtils
             SlotType.Gloves => "Gloves",
             SlotType.Shoulders => "Shoulders",
             SlotType.Bracers => "Bracer",
+            SlotType.Cloak => "Cloak",
+            SlotType.Trinket => "Trinket",
             _ => "Item",
         };
 
@@ -68,7 +70,20 @@ public static class ItemUtils
 
     public static Equipment GenerateEquipment(int itemLevel, Rarities rarity, SlotType slot)
     {
-        Equipment equipment = new(
+        if (slot == SlotType.MainHand || slot == SlotType.OffHand)
+        {
+            return new Weapon(
+                GenerateEquipmentName(slot, itemLevel, rarity),
+                itemLevel,
+                slot,
+                new Stats(1 * Mathf.RoundToInt(Mathf.Max(itemLevel / 2f, 1f) * Mathf.Pow(1.01f, itemLevel)), 1, 1, 0, 0),
+                GenerateIcon(slot, rarity),
+                rarity,
+                itemLevel,
+                Random.Range(1f, 3f)
+            );
+        }
+        return new(
             GenerateEquipmentName(slot, itemLevel, rarity),
             itemLevel,
             slot,
@@ -76,7 +91,6 @@ public static class ItemUtils
             GenerateIcon(slot, rarity),
             rarity
         );
-        return equipment;
     }
 
 }

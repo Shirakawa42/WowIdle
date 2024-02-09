@@ -4,17 +4,19 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public GameObject inventoryPanel;
-    public int columnAmount = 10;
     public GameObject slotPrefab;
-    private List<Slot> slots;
+    public int inventoryColumnAmount = 10;
+
+    private List<Slot> inventoryslots;
 
     void Awake()
     {
         Globals.inventoryManager = this;
-        slots = new List<Slot>();
-        for (int i = 1; i < columnAmount; i++)
+        inventoryslots = new List<Slot>();
+        for (int i = 1; i < inventoryColumnAmount; i++)
         {
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < 3; j++)
+            {
                 GameObject slot = Instantiate(slotPrefab, inventoryPanel.transform);
                 slot.GetComponent<Slot>().slotType = SlotType.AnyGear;
                 slot.GetComponent<Slot>().equippedSlot = false;
@@ -26,13 +28,13 @@ public class InventoryManager : MonoBehaviour
         }
         foreach (Transform child in inventoryPanel.transform)
         {
-            slots.Add(child.GetComponent<Slot>());
+            inventoryslots.Add(child.GetComponent<Slot>());
         }
     }
 
     public void AddItem(Equipment equipment)
     {
-        foreach (Slot slot in slots)
+        foreach (Slot slot in inventoryslots)
         {
             if (slot.IsEmpty())
             {

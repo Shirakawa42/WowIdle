@@ -62,7 +62,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   draggableItem: {fileID: 1810030763766079055}
-  gearSlot: 16
+  slotType: 0
+  equippedSlot: 1
 --- !u!114 &4596540825732783260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,7 +415,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 70, y: 70}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1616057323300225158
 CanvasRenderer:

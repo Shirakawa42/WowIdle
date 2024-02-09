@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, IBeginDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public GameObject draggableItem;
+    public List<GameObject> extras = new();
     public SlotType slotType;
     public bool equippedSlot = true;
 
@@ -16,8 +18,8 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
 
         if (equippedSlot)
         {
-            this.slotable?.OnUnequip();
-            slotable?.OnEquip(Globals.selectedHero);
+            this.slotable?.OnUnequip(this);
+            slotable?.OnEquip(Globals.selectedHero, this);
         }
         this.slotable = slotable;
         draggableItem.SetActive(false);
@@ -29,6 +31,14 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
             draggableItem.SetActive(true);
         }
         return oldSlotable;
+    }
+
+    public void EnableExtras(bool enable)
+    {
+        foreach (GameObject extra in extras)
+        {
+            extra.SetActive(enable);
+        }
     }
 
     public Slotable GetSlotable()
@@ -43,7 +53,7 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (slotable != null)
+        if (slotable != null && slotType != SlotType.Enemy)
         {
             draggableItem.transform.SetParent(transform.root);
             draggableItem.transform.SetAsLastSibling();
@@ -52,7 +62,7 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (slotable != null)
+        if (slotable != null && slotType != SlotType.Enemy)
         {
             draggableItem.transform.position = eventData.position;
         }

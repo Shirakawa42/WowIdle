@@ -36,16 +36,15 @@ public class Equipment : Slotable
         return tooltipValues;
     }
 
-    public override void OnEquip(Unit unit)
+    public override void OnEquip(Unit unit, Slot slot)
     {
-        Debug.Log("Equipping " + equipmentName + " to " + unit.unitName);
         equippedUnit = unit;
         equippedUnit.stats += stats;
         equippedUnit.RecalculateUnitStats();
         Globals.statsPanelManager.UpdateStats(equippedUnit);
     }
 
-    public override void OnUnequip()
+    public override void OnUnequip(Slot slot)
     {
         equippedUnit.stats -= stats;
         equippedUnit.RecalculateUnitStats();
