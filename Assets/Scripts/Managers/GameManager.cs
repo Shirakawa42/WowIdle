@@ -17,8 +17,6 @@ public class GameManager : MonoBehaviour
             8,
             new UnitStats(),
             new Stats(5, 5, 5, 5, 0),
-            (Weapon)ItemUtils.GenerateEquipment(16, Rarities.Common, SlotType.MainHand),
-            (Weapon)ItemUtils.GenerateEquipment(8, Rarities.Common, SlotType.OffHand),
             icon,
             UnitClasses.Shaman
         );
@@ -28,8 +26,6 @@ public class GameManager : MonoBehaviour
             8,
             new UnitStats(),
             new Stats(2, 2, 2, 2, 0),
-            (Weapon)ItemUtils.GenerateEquipment(1, Rarities.Common, SlotType.MainHand),
-            (Weapon)ItemUtils.GenerateEquipment(1, Rarities.Common, SlotType.OffHand),
             icon,
             UnitClasses.Enemy
         ));
@@ -50,8 +46,6 @@ public class GameManager : MonoBehaviour
             2,
             new UnitStats(),
             new Stats(5, 5, 5, 5, 0),
-            (Weapon)ItemUtils.GenerateEquipment(3, Rarities.Common, SlotType.MainHand),
-            (Weapon)ItemUtils.GenerateEquipment(1, Rarities.Common, SlotType.OffHand),
             icon,
             UnitClasses.Shaman
         ));

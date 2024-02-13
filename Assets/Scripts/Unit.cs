@@ -6,21 +6,21 @@ public class Unit : Slotable
     public int level;
     public UnitStats unitStats;
     public Stats stats;
-    public Weapon weaponMainhand;
-    public Weapon weaponOffhand;
     public UnitClasses unitClass;
     public Unit target = null;
-    
-    private Slot currentSlot = null;
+    public UnitGears gears = new();
+    public Weapon defaultWeapon = new("Fists", 1, SlotType.MainHand, new Stats(0, 0, 0, 0, 0), null, Rarities.Common, 5, 1f);
+    public override SlotType SlotType { get; set; }
+    public override Sprite Icon { get; set; }
+    public override Color Color { get; set; }
+    public override Slot CurrentSlot { get; set; }
 
-    public Unit(string unitName, int level, UnitStats unitStats, Stats stats, Weapon weaponMainhand, Weapon weaponOffhand, Sprite icon, UnitClasses unitClass)
+    public Unit(string unitName, int level, UnitStats unitStats, Stats stats, Sprite icon, UnitClasses unitClass)
     {
         this.unitName = unitName;
         this.level = level;
         this.unitStats = unitStats;
         this.stats = stats;
-        this.weaponMainhand = weaponMainhand;
-        this.weaponOffhand = weaponOffhand;
         this.Icon = icon;
         this.unitClass = unitClass;
         this.SlotType = (unitClass == UnitClasses.Enemy) ? SlotType.Enemy : SlotType.Hero;
@@ -28,22 +28,25 @@ public class Unit : Slotable
         RegenUnit();
     }
 
-    public override SlotType SlotType { get; set; }
-    public override Sprite Icon { get; set; }
-    public override Color Color { get; set; }
-
     public void Tick()
     {
         PickTarget();
-        weaponMainhand?.Tick(target, this);
-        weaponOffhand?.Tick(target, this);
+        Weapon mainHandWeapon = gears.GetMainHandWeapon();
+        Weapon offHandWeapon = gears.GetOffHandWeapon();
+        if (mainHandWeapon == null && offHandWeapon == null)
+            defaultWeapon.Tick(target, this);
+        else
+        {
+            mainHandWeapon?.Tick(target, this);
+            offHandWeapon?.Tick(target, this);
+        }
         UpdateBars();
     }
 
     private void UpdateBars()
     {
-        ProgressBar healthBar = currentSlot.extras.Find(x => x.name == "HpBar").GetComponent<ProgressBar>();
-        ProgressBar manaBar = currentSlot.extras.Find(x => x.name == "ResourceBar").GetComponent<ProgressBar>();
+        ProgressBar healthBar = CurrentSlot.extras.Find(x => x.name == "HpBar").GetComponent<ProgressBar>();
+        ProgressBar manaBar = CurrentSlot.extras.Find(x => x.name == "ResourceBar").GetComponent<ProgressBar>();
 
         healthBar.UpdateValues(unitStats.maxHealth, unitStats.currentHealth, Color.red);
         manaBar.UpdateValues(unitStats.maxResource, unitStats.currentResource, Color.cyan);
@@ -109,20 +112,19 @@ public class Unit : Slotable
         UpdateBars();
     }
 
-    public override void OnEquip(Unit unit, Slot slot)
+    public override void OnEquip()
     {
-        currentSlot = slot;
         if (unitClass == UnitClasses.Enemy)
             Globals.activeEnemies.Add(this);
         else
             Globals.activeHeroes.Add(this);
-        slot.EnableExtras(true);
+        CurrentSlot.EnableExtras(true);
     }
 
-    public override void OnUnequip(Slot slot)
+    public override void OnUnequip()
     {
         Globals.activeHeroes.Remove(this);
-        slot.EnableExtras(false);
+        CurrentSlot.EnableExtras(false);
     }
 
     public override void OnPointerEnter(Vector3 slotPosition)
@@ -133,5 +135,20 @@ public class Unit : Slotable
     public override void OnPointerExit()
     {
         //TODO
+    }
+
+    public override void SetCurrentSlot(Slot slot)
+    {
+        CurrentSlot = slot;
+    }
+
+    public override void OnClick()
+    {
+        if (Globals.selectedHero == this)
+            return;
+
+        Globals.selectedHero = this;
+        Globals.statsPanelManager.UpdateStats(this);
+        Globals.gearSlotsManager.SetGearSlots(gears, unitName);
     }
 }

@@ -12,6 +12,7 @@ public class Equipment : Slotable
     public override SlotType SlotType { get; set; }
     public override Sprite Icon { get; set; }
     public override Color Color { get; set; }
+    public override Slot CurrentSlot { get; set; }
 
     public Equipment(string name, int itemLevel, SlotType slot, Stats stats, Sprite icon, Rarities rarity)
     {
@@ -36,17 +37,21 @@ public class Equipment : Slotable
         return tooltipValues;
     }
 
-    public override void OnEquip(Unit unit, Slot slot)
+    public override void OnEquip()
     {
-        equippedUnit = unit;
+        if (equippedUnit != null) return;
+        equippedUnit = Globals.selectedHero;
+        equippedUnit.gears.Equip(CurrentSlot.id, this);
         equippedUnit.stats += stats;
         equippedUnit.RecalculateUnitStats();
         Globals.statsPanelManager.UpdateStats(equippedUnit);
     }
 
-    public override void OnUnequip(Slot slot)
+    public override void OnUnequip()
     {
+        if (equippedUnit == null) return;
         equippedUnit.stats -= stats;
+        equippedUnit.gears.Unequip(CurrentSlot.id);
         equippedUnit.RecalculateUnitStats();
         Globals.statsPanelManager.UpdateStats(equippedUnit);
         equippedUnit = null;
@@ -60,5 +65,10 @@ public class Equipment : Slotable
     public override void OnPointerExit()
     {
         Globals.itemTooltipManager.HideTooltip();
+    }
+
+    public override void SetCurrentSlot(Slot slot)
+    {
+        CurrentSlot = slot;
     }
 }
