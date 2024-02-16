@@ -2,17 +2,19 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using Stopwatch = System.Diagnostics.Stopwatch;
-using Unity.VisualScripting.Dependencies.Sqlite;
-using UnityEngine.AI;
+using TMPro;
+using UnityEngine.UI;
 
 public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, IBeginDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     public GameObject draggableItem;
     public List<GameObject> extras = new();
+    public List<Image> coloredImages = new();
     public SlotType slotType;
     public bool equippedSlot = true;
     public int id;
     public GameObject selectedBorder;
+    public TMP_Text levelText = null;
 
     private Slotable slotable = null;
 
@@ -32,10 +34,12 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
         draggableItem.SetActive(false);
         if (newslotable != null)
         {
+            UpdateLevel();
             draggableItem.GetComponent<DraggedObject>().icon.sprite = newslotable.Icon;
-            draggableItem.GetComponent<DraggedObject>().border.color = newslotable.Color;
             draggableItem.GetComponent<DraggedObject>().slotable = newslotable;
             draggableItem.SetActive(true);
+            foreach (Image image in coloredImages)
+                image.color = newslotable.Color;
         }
         return oldSlotable;
     }
@@ -46,6 +50,11 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
         {
             extra.SetActive(enable);
         }
+    }
+
+    public void UpdateLevel()
+    {
+        levelText.text = slotable.Level.ToString();
     }
 
     public Slotable GetSlotable()

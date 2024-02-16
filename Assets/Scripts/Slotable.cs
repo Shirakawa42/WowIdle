@@ -6,6 +6,7 @@ public abstract class Slotable
     public abstract Sprite Icon { get; set; }
     public abstract Color Color { get; set; }
     public abstract Slot CurrentSlot { get; set; }
+    public abstract int Level { get; set; }
 
     public abstract void OnEquip();
     public abstract void OnUnequip();

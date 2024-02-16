@@ -4,7 +4,6 @@ using UnityEngine;
 public class Equipment : Slotable
 {
     public string equipmentName;
-    public int itemLevel;
     public Stats stats;
     public Rarities rarity;
     public Unit equippedUnit;
@@ -13,16 +12,17 @@ public class Equipment : Slotable
     public override Sprite Icon { get; set; }
     public override Color Color { get; set; }
     public override Slot CurrentSlot { get; set; }
+    public override int Level { get; set; }
 
     public Equipment(string name, int itemLevel, SlotType slot, Stats stats, Sprite icon, Rarities rarity)
     {
         this.equipmentName = name;
-        this.itemLevel = itemLevel;
+        this.Level = itemLevel;
         this.stats = stats;
         this.Icon = icon;
         this.rarity = rarity;
         this.SlotType = slot;
-        this.Color = ItemUtils.GetRarityColor(rarity);
+        this.Color = ColorUtils.GetColorFromRarity(rarity);
     }
 
     public List<TooltipValue> GetTooltipValues()

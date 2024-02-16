@@ -1,9 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Unit : Slotable
 {
     public string unitName;
-    public int level;
     public UnitStats unitStats;
     public Stats stats;
     public UnitClasses unitClass;
@@ -15,15 +15,22 @@ public class Unit : Slotable
     public override Color Color { get; set; }
     public override Slot CurrentSlot { get; set; }
 
+    public override int Level
+    {
+        get => unitStats.level;
+        set => unitStats.level = value;
+    }
+
     public Unit(string unitName, int level, UnitStats unitStats, Stats stats, Sprite icon, UnitClasses unitClass)
     {
         this.unitName = unitName;
-        this.level = level;
         this.unitStats = unitStats;
         this.stats = stats;
-        this.Icon = icon;
+        Icon = icon;
         this.unitClass = unitClass;
-        this.SlotType = (unitClass == UnitClasses.Enemy) ? SlotType.Enemy : SlotType.Hero;
+        Level = level;
+        SlotType = (unitClass == UnitClasses.Enemy) ? SlotType.Enemy : SlotType.Hero;
+        Color = ColorUtils.GetColorFromClass(unitClass);
         RecalculateUnitStats();
         RegenUnit();
     }
@@ -76,8 +83,8 @@ public class Unit : Slotable
 
     public void RecalculateUnitStats()
     {
-        unitStats.maxHealth = 300 + level * 10 + stats.stamina * 5;
-        unitStats.maxResource = 100 + level * 10 + stats.intelligence * 5;
+        unitStats.maxHealth = 300 + Level * 10 + stats.stamina * 5;
+        unitStats.maxResource = 100 + Level * 10 + stats.intelligence * 5;
     }
 
     public void RegenUnit()
@@ -92,6 +99,8 @@ public class Unit : Slotable
         {
             unitStats.level++;
             RecalculateUnitStats();
+            if (CurrentSlot != null)
+                CurrentSlot.UpdateLevel();
         }
     }
 
@@ -129,12 +138,16 @@ public class Unit : Slotable
 
     public override void OnPointerEnter(Vector3 slotPosition)
     {
-        //TODO
+        List<TooltipValue> tooltipValues = new()
+        {
+            new TooltipValue(unitName, "(lvl " + Level.ToString() + ")", Color.white)
+        };
+        Globals.itemTooltipManager.ShowTooltip(tooltipValues, Color, slotPosition + new Vector3(-272/2, 175/2, 0), "", Color);
     }
 
     public override void OnPointerExit()
     {
-        //TODO
+        Globals.itemTooltipManager.HideTooltip();
     }
 
     public override void SetCurrentSlot(Slot slot)

@@ -4,19 +4,6 @@ using UnityEngine;
 public static class ItemUtils
 {
 
-    public static Color GetRarityColor(Rarities rarity)
-    {
-        return rarity switch
-        {
-            Rarities.Common => Color.white,
-            Rarities.Uncommon => Color.green,
-            Rarities.Rare => Color.blue,
-            Rarities.Epic => Color.magenta,
-            Rarities.Legendary => Color.yellow,
-            _ => Color.white,
-        };
-    }
-
     public static string GenerateEquipmentName(SlotType slot, int itemLevel, Rarities rarity)
     {
         //TODO

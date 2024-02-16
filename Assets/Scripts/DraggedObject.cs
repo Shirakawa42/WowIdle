@@ -6,6 +6,5 @@ using UnityEngine.UI;
 public class DraggedObject : MonoBehaviour
 {
     public Image icon;
-    public Image border;
     public Slotable slotable;
 }

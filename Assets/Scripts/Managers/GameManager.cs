@@ -12,15 +12,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        Globals.selectedHero = new Unit(
-            "MacLovin",
-            8,
-            new UnitStats(),
-            new Stats(5, 5, 5, 5, 0),
-            icon,
-            UnitClasses.Shaman
-        );
-
         Globals.enemySlotsManager.AddEnemy(new Unit(
             "Joshua",
             8,
@@ -40,7 +31,14 @@ public class GameManager : MonoBehaviour
 
     public void AddHeroToInventory()
     {
-        Globals.heroesInventoryManager.AddHero(Globals.selectedHero);
+        Globals.heroesInventoryManager.AddHero(new Unit(
+            "MacLovin",
+            8,
+            new UnitStats(),
+            new Stats(5, 5, 5, 5, 0),
+            icon,
+            UnitClasses.Shaman
+        ));
         Globals.heroesInventoryManager.AddHero(new Unit(
             "JeanPascal",
             2,
