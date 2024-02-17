@@ -41,8 +41,10 @@ public static class ItemUtils
 
     public static Sprite GenerateIcon(SlotType slot, Rarities rarity)
     {
-        //TODO
-        return Globals.gameManager.icon;
+        string type = slot.ToString();
+        if (slot == SlotType.MainHand || slot == SlotType.OffHand)
+            type = "Weapon";
+        return Resources.Load<Sprite>("Textures/Equipments/" + type + "/" + Random.Range(0, 10).ToString());
     }
 
     public static SlotType GenerateRandomSlotType()

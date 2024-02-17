@@ -21,12 +21,12 @@ public class Unit : Slotable
         set => unitStats.level = value;
     }
 
-    public Unit(string unitName, int level, UnitStats unitStats, Stats stats, Sprite icon, UnitClasses unitClass)
+    public Unit(string unitName, int level, UnitStats unitStats, Stats stats, UnitClasses unitClass)
     {
         this.unitName = unitName;
         this.unitStats = unitStats;
         this.stats = stats;
-        Icon = icon;
+        Icon = Resources.Load<Sprite>("Textures/ClassIcons/" + unitClass.ToString());
         this.unitClass = unitClass;
         Level = level;
         SlotType = (unitClass == UnitClasses.Enemy) ? SlotType.Enemy : SlotType.Hero;

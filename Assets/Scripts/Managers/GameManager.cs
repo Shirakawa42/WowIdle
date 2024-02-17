@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public Sprite icon;
     private float tickCooldown = Globals.tickRate;
 
     void Awake() {
@@ -17,7 +16,6 @@ public class GameManager : MonoBehaviour
             8,
             new UnitStats(),
             new Stats(2, 2, 2, 2, 0),
-            icon,
             UnitClasses.Enemy
         ));
         AddHeroToInventory();
@@ -36,7 +34,6 @@ public class GameManager : MonoBehaviour
             8,
             new UnitStats(),
             new Stats(5, 5, 5, 5, 0),
-            icon,
             UnitClasses.Shaman
         ));
         Globals.heroesInventoryManager.AddHero(new Unit(
@@ -44,7 +41,6 @@ public class GameManager : MonoBehaviour
             2,
             new UnitStats(),
             new Stats(5, 5, 5, 5, 0),
-            icon,
             UnitClasses.Shaman
         ));
     }
