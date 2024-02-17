@@ -136,13 +136,13 @@ public class Unit : Slotable
         CurrentSlot.EnableExtras(false);
     }
 
-    public override void OnPointerEnter(Vector3 slotPosition)
+    public override void OnPointerEnter()
     {
         List<TooltipValue> tooltipValues = new()
         {
-            new TooltipValue(unitName, "(lvl " + Level.ToString() + ")", Color.white)
+            new TooltipValue(unitName, "(lvl " + Level.ToString() + ")", TooltipValueType.Name),
         };
-        Globals.itemTooltipManager.ShowTooltip(tooltipValues, Color, slotPosition + new Vector3(-272/2, 175/2, 0), "", Color);
+        Globals.itemTooltipManager.ShowTooltip(tooltipValues, Color, CurrentSlot.GetTopLeftCorner());
     }
 
     public override void OnPointerExit()

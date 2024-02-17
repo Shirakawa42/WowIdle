@@ -74,7 +74,7 @@ public static class ItemUtils
             GenerateEquipmentName(slot, itemLevel, rarity),
             itemLevel,
             slot,
-            new Stats(1 * Mathf.RoundToInt(Mathf.Max(itemLevel / 2f, 1f) * Mathf.Pow(1.01f, itemLevel)), 1, 1, 0, 0),
+            new Stats(1 * Mathf.RoundToInt(Mathf.Max(itemLevel / 2f, 1f) * Mathf.Pow(1.01f, itemLevel)), 1, 1, 0, 10*itemLevel),
             GenerateIcon(slot, rarity),
             rarity
         );

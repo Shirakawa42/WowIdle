@@ -10,7 +10,7 @@ public abstract class Slotable
 
     public abstract void OnEquip();
     public abstract void OnUnequip();
-    public abstract void OnPointerEnter(Vector3 slotPosition);
+    public abstract void OnPointerEnter();
     public abstract void OnPointerExit();
     public abstract void SetCurrentSlot(Slot slot);
     public virtual void OnClick() { }

@@ -1,77 +1,85 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.UI;
 
 public struct TooltipValue {
     public string name;
     public string value;
-    public Color color;
+    public TooltipValueType type;
+    public Rarities rarity;
 
-    public TooltipValue(string name, string value, Color color)
+    public TooltipValue(string name, string value, TooltipValueType type, Rarities rarity = Rarities.Common)
     {
         this.name = name;
         this.value = value;
-        this.color = color;
+        this.type = type;
+        this.rarity = rarity;
     }
+}
+
+public enum TooltipValueType
+{
+    MainStat,
+    SecondaryStat,
+    Armor,
+    Name,
+    Description,
+    EquipmentType
 }
 
 public class ItemTooltipManager : MonoBehaviour
 {
     public GameObject tooltip;
-    public Image border;
-    public GameObject p_names;
-    public GameObject p_values;
-    public TMP_Text title;
-    private List<TMP_Text> names;
-    private List<TMP_Text> values;
-    private int maxLines;
+    public RectTransform background;
+    public RectTransform border;
+    public TextMeshProUGUI text;
+
+    private Image borderImage;
 
     void Awake()
     {
         Globals.itemTooltipManager = this;
-        tooltip.SetActive(false);
-        names = new List<TMP_Text>();
-        values = new List<TMP_Text>();
-        foreach (Transform child in p_names.transform)
-        {
-            names.Add(child.GetComponent<TMP_Text>());
-        }
-        foreach (Transform child in p_values.transform)
-        {
-            values.Add(child.GetComponent<TMP_Text>());
-        }
-        maxLines = names.Count;
+        borderImage = border.GetComponent<Image>();
+        HideTooltip();
     }
 
-    public void ShowTooltip(List<TooltipValue> tooltipValues, Color borderColor, Vector3 position, string title, Color titleColor)
+    void UpdateSize()
     {
-        this.title.text = title;
-        this.title.color = titleColor;
-        for (int i = 0; i < maxLines; i++)
+        text.ForceMeshUpdate(true);
+        Vector2 textSize = text.GetRenderedValues(false);
+        background.sizeDelta = textSize + new Vector2(20, 20);
+        border.sizeDelta = textSize + new Vector2(25, 25);
+        text.rectTransform.sizeDelta = textSize;
+    }
+
+    public void ShowTooltip(List<TooltipValue> tooltipValues, Color borderColor, Vector3 position)
+    {
+        text.SetText("");
+        foreach (TooltipValue tooltipValue in tooltipValues)
         {
-            if (i >= tooltipValues.Count)
-            {
-                names[i].gameObject.SetActive(false);
-                values[i].gameObject.SetActive(false);
-                continue;
-            }
-            names[i].gameObject.SetActive(true);
-            values[i].gameObject.SetActive(true);
-            names[i].text = tooltipValues[i].name;
-            names[i].color = tooltipValues[i].color;
-            values[i].text = tooltipValues[i].value;
-            values[i].color = tooltipValues[i].color;
+            if (tooltipValue.type == TooltipValueType.MainStat || tooltipValue.type == TooltipValueType.SecondaryStat)
+                text.SetText(text.text + "<align=left>" + "<color=#" + ColorUtility.ToHtmlStringRGB(ColorUtils.GetColorFromTooltipValueType(tooltipValue.type)) + ">+" + tooltipValue.value + " " + tooltipValue.name + "</color></align>\n");
+            else if (tooltipValue.type == TooltipValueType.Name)
+                text.SetText(text.text + "<align=left>" + "<color=#" + ColorUtility.ToHtmlStringRGB(ColorUtils.GetColorFromTooltipValueType(tooltipValue.type, tooltipValue.rarity)) + ">" + tooltipValue.name + "</color></align>\n");
+            else if (tooltipValue.type == TooltipValueType.Description)
+                text.SetText(text.text + "<align=left>" + "<color=#" + ColorUtility.ToHtmlStringRGB(ColorUtils.GetColorFromTooltipValueType(tooltipValue.type)) + ">" + tooltipValue.name + "</color></align>\n");
+            else if (tooltipValue.type == TooltipValueType.Armor)
+                text.SetText(text.text + "<align=left>" + "<color=#" + ColorUtility.ToHtmlStringRGB(ColorUtils.GetColorFromTooltipValueType(tooltipValue.type)) + ">" + tooltipValue.name + ": " + tooltipValue.value + "</color></align>\n");
+            else if (tooltipValue.type == TooltipValueType.EquipmentType)
+                text.SetText(text.text + "<align=left>" + "<color=#" + ColorUtility.ToHtmlStringRGB(ColorUtils.GetColorFromTooltipValueType(tooltipValue.type)) + ">" + tooltipValue.name + "</color></align>\n");
         }
-        border.color = borderColor;
-        tooltip.transform.position = position;
-        tooltip.SetActive(true);
+        borderImage.color = borderColor;
+        UpdateSize();
+        UpdateSize();
+        tooltip.transform.position = position + new Vector3(10, -10, 0);
     }
 
     public void HideTooltip()
     {
-        tooltip.SetActive(false);
+        tooltip.transform.position = new Vector3(-1000, -1000, 0);
     }
-    
+
 }

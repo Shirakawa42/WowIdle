@@ -44,6 +44,12 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
         return oldSlotable;
     }
 
+    public Vector2 GetTopLeftCorner()
+    {
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        return new Vector2(rectTransform.position.x - rectTransform.rect.width / 2, rectTransform.position.y + rectTransform.rect.height / 2);
+    }
+
     public void EnableExtras(bool enable)
     {
         foreach (GameObject extra in extras)
@@ -119,7 +125,7 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        slotable?.OnPointerEnter(transform.position);
+        slotable?.OnPointerEnter();
     }
 
     public void OnPointerExit(PointerEventData eventData)

@@ -27,13 +27,16 @@ public class Equipment : Slotable
 
     public List<TooltipValue> GetTooltipValues()
     {
-        List<TooltipValue> tooltipValues = new();
-        if (stats.strength > 0) tooltipValues.Add(new TooltipValue("Strength", stats.strength.ToString(), stats.GetStatColor("Strength")));
-        if (stats.agility > 0) tooltipValues.Add(new TooltipValue("Agility", stats.agility.ToString(), stats.GetStatColor("Agility")));
-        if (stats.intelligence > 0) tooltipValues.Add(new TooltipValue("Intelligence", stats.intelligence.ToString(), stats.GetStatColor("Intelligence")));
-        if (stats.stamina > 0) tooltipValues.Add(new TooltipValue("Stamina", stats.stamina.ToString(), stats.GetStatColor("Stamina")));
-        if (stats.armor > 0) tooltipValues.Add(new TooltipValue("Armor", stats.armor.ToString(), stats.GetStatColor("Armor")));
-
+        List<TooltipValue> tooltipValues = new()
+        {
+            new TooltipValue(equipmentName, "", TooltipValueType.Name, rarity),
+            new TooltipValue(SlotType.ToString(), "", TooltipValueType.EquipmentType, rarity)
+        };
+        if (stats.armor > 0) tooltipValues.Add(new TooltipValue("Armor", stats.armor.ToString(), TooltipValueType.Armor));
+        if (stats.strength > 0) tooltipValues.Add(new TooltipValue("Strength", stats.strength.ToString(), TooltipValueType.MainStat));
+        if (stats.agility > 0) tooltipValues.Add(new TooltipValue("Agility", stats.agility.ToString(), TooltipValueType.MainStat));
+        if (stats.intelligence > 0) tooltipValues.Add(new TooltipValue("Intelligence", stats.intelligence.ToString(), TooltipValueType.MainStat));
+        if (stats.stamina > 0) tooltipValues.Add(new TooltipValue("Stamina", stats.stamina.ToString(), TooltipValueType.MainStat));
         return tooltipValues;
     }
 
@@ -57,9 +60,9 @@ public class Equipment : Slotable
         equippedUnit = null;
     }
 
-    public override void OnPointerEnter(Vector3 slotPosition)
+    public override void OnPointerEnter()
     {
-        Globals.itemTooltipManager.ShowTooltip(GetTooltipValues(), Color, slotPosition + new Vector3(-272/2, 175/2, 0), equipmentName, Color);
+        Globals.itemTooltipManager.ShowTooltip(GetTooltipValues(), Color, CurrentSlot.GetTopLeftCorner());
     }
 
     public override void OnPointerExit()

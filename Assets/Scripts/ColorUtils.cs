@@ -26,4 +26,16 @@ public class ColorUtils
             _ => Color.white,
         };
     }
+
+    public static Color GetColorFromTooltipValueType(TooltipValueType type, Rarities rarity = Rarities.Common)
+    {
+        return type switch
+        {
+            TooltipValueType.MainStat => Color.white,
+            TooltipValueType.SecondaryStat => Color.green,
+            TooltipValueType.Name => GetColorFromRarity(rarity),
+            TooltipValueType.Description => Color.yellow,
+            _ => Color.white,
+        };
+    }
 }
