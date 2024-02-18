@@ -6,12 +6,14 @@ public class Weapon : Equipment
     private float currentCooldown;
     public float damages;
     public float cooldown;
+    public WeaponType weaponType;
 
-    public Weapon(string name, int itemLevel, SlotType slot, Sprite icon, Rarities rarity, Stats stats, float damages, float cooldown) : base(name, itemLevel, slot, icon, rarity, stats)
+    public Weapon(string name, int itemLevel, SlotType slot, Sprite icon, Rarities rarity, Stats stats, float damages, float cooldown, WeaponType weaponType) : base(name, itemLevel, slot, icon, rarity, stats)
     {
         this.damages = damages;
         this.cooldown = cooldown;
         currentCooldown = cooldown;
+        this.weaponType = weaponType;
     }
 
     public void AutoAttack(Unit target)
@@ -41,7 +43,7 @@ public class Weapon : Equipment
         List<TooltipValue> tooltipValues = new()
         {
             new TooltipValue(equipmentName, "", ValueType.Name, rarity),
-            new TooltipValue(SlotType.ToString(), "", ValueType.EquipmentType, rarity),
+            new TooltipValue(SlotType.ToString() + " " + weaponType.ToString(), "", ValueType.EquipmentType, rarity),
             new TooltipValue("Damages", damages.ToString(), ValueType.Armor, rarity),
             new TooltipValue("Speed", cooldown.ToString(), ValueType.Armor, rarity)
         };

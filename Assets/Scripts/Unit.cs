@@ -8,7 +8,7 @@ public class Unit : Slotable
     public UnitClasses unitClass;
     public Unit target = null;
     public UnitGears gears = new();
-    public Weapon defaultWeapon = new("Fists", 1, SlotType.OneHand, null, Rarities.Common, new Stats(new Stat[0]), 1f, 1f);
+    public Weapon defaultWeapon = new("Fists", 1, SlotType.OneHand, null, Rarities.Common, new Stats(new Stat[0]), 1f, 1f, WeaponType.Mace);
     public override SlotType SlotType { get; set; }
     public override Sprite Icon { get; set; }
     public override string Color { get; set; }
@@ -94,9 +94,9 @@ public class Unit : Slotable
         }
         else
         {
-            stats[StatIds.MainHandDamage].value = CalcUtils.CalculateWeaponDamage(gears.GetMainHandWeapon(), stats, true);
+            stats[StatIds.MainHandDamage].value = CalcUtils.CalculateWeaponDamage(gears.GetMainHandWeapon(), this, true);
             stats[StatIds.MainHandSpeed].value = gears.GetMainHandWeapon()?.cooldown ?? 0;
-            stats[StatIds.OffHandDamage].value = CalcUtils.CalculateWeaponDamage(gears.GetOffHandWeapon(), stats, false);
+            stats[StatIds.OffHandDamage].value = CalcUtils.CalculateWeaponDamage(gears.GetOffHandWeapon(), this, false);
             stats[StatIds.OffHandSpeed].value = gears.GetOffHandWeapon()?.cooldown ?? 0;
         }
     }
@@ -143,7 +143,7 @@ public class Unit : Slotable
     {
         List<TooltipValue> tooltipValues = new()
         {
-            new TooltipValue(unitName, "(lvl " + Level.ToString() + ")", ValueType.Name),
+            new TooltipValue(unitName, "", ValueType.Name),
         };
         Globals.itemTooltipManager.ShowTooltip(tooltipValues, Color, CurrentSlot.GetTopLeftCorner());
     }

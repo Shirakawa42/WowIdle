@@ -49,7 +49,7 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
     public Vector2 GetTopLeftCorner()
     {
         RectTransform rectTransform = GetComponent<RectTransform>();
-        return new Vector2(rectTransform.position.x - rectTransform.rect.width / 2, rectTransform.position.y + rectTransform.rect.height / 2);
+        return new Vector2(rectTransform.position.x - rectTransform.rect.width / 2 * Globals.gameCanvas.scaleFactor, rectTransform.position.y + rectTransform.rect.height / 2 * Globals.gameCanvas.scaleFactor);
     }
 
     public void EnableExtras(bool enable)

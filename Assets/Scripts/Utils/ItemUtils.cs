@@ -47,23 +47,34 @@ public static class ItemUtils
         return (Rarities)Random.Range(0, 6);
     }
 
+    public static WeaponType GenerateRandomWeaponType()
+    {
+        return (WeaponType)Random.Range(0, 4);
+    }
+
     public static Equipment GenerateEquipment(int itemLevel)
     {
         SlotType slot = GenerateRandomSlotType();
         Rarities rarity = GenerateRandomRarity();
+        GearMat gearMat = GetRandomGearMatFromSlot(slot);
 
         if (slot == SlotType.OneHand || slot == SlotType.TwoHands)
         {
             float weaponSpeed = (float)Math.Round(Random.Range(0.5f, 2f), 2);
+            WeaponType weaponType = GenerateRandomWeaponType();
+            float damages = Mathf.Round(itemLevel * weaponSpeed * Mathf.Pow(1.005f, itemLevel) * StatsRatioBySlot(slot));
+            if (weaponType == WeaponType.Shield)
+                damages *= .1f;
             return new Weapon(
                 GenerateEquipmentName(slot, itemLevel),
                 itemLevel,
                 slot,
                 GenerateIcon(slot),
                 rarity,
-                GenerateStatsForEquipment(itemLevel, slot, rarity),
-                Mathf.Round(itemLevel * weaponSpeed * 2f),
-                weaponSpeed
+                GenerateStatsForEquipment(itemLevel, slot, rarity, weaponType == WeaponType.Shield ? GearMat.Shield : GearMat.None, weaponType),
+                damages,
+                weaponSpeed,
+                weaponType
             );
         }
         return new(
@@ -72,8 +83,37 @@ public static class ItemUtils
             slot,
             GenerateIcon(slot),
             rarity,
-            GenerateStatsForEquipment(itemLevel, slot, rarity)
+            GenerateStatsForEquipment(itemLevel, slot, rarity, gearMat),
+            gearMat
         );
+    }
+
+    public static GearMat GetRandomGearMatFromSlot(SlotType slot)
+    {
+        return slot switch
+        {
+            SlotType.Cloak => GearMat.None,
+            SlotType.OneHand => GearMat.None,
+            SlotType.TwoHands => GearMat.None,
+            SlotType.Ring => GearMat.None,
+            SlotType.Neck => GearMat.None,
+            SlotType.Trinket => GearMat.None,
+            _ => (GearMat)Random.Range(0, 4),
+        };
+    }
+
+    private static float ArmorRatioByGearMat(GearMat mat)
+    {
+        return mat switch
+        {
+            GearMat.None => 0f,
+            GearMat.Cloth => .5f,
+            GearMat.Leather => .86f,
+            GearMat.Mail => 1.26f,
+            GearMat.Plate => 1.9f,
+            GearMat.Shield => 3f,
+            _ => 0f,
+        };
     }
 
     private static float StatsRatioBySlot(SlotType slot)
@@ -111,25 +151,37 @@ public static class ItemUtils
         };
     }
 
-    private static StatIds[] PossiblesStatsBySlot(SlotType slot)
+    private static StatIds[] PossibleStatsByWeaponType(WeaponType type)
+    {
+        return type switch
+        {
+            WeaponType.Sword => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances },
+            WeaponType.Axe => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances },
+            WeaponType.Mace => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances },
+            WeaponType.Shield => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances },
+            _ => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina },
+        };
+    }
+
+    private static StatIds[] PossiblesStatsBySlot(SlotType slot, WeaponType weaponType)
     {
         return slot switch
         {
-            SlotType.Head => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances, StatIds.Armor },
-            SlotType.Chest => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances, StatIds.Armor },
-            SlotType.Legs => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances, StatIds.Armor },
-            SlotType.Shoulders => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances, StatIds.Armor },
-            SlotType.Boots => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances, StatIds.Armor },
-            SlotType.Gloves => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances, StatIds.Armor },
-            SlotType.Belt => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances, StatIds.Armor },
-            SlotType.Bracers => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances, StatIds.Armor },
-            SlotType.Cloak => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances },
-            SlotType.OneHand => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances },
-            SlotType.TwoHands => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances },
-            SlotType.Ring => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances },
-            SlotType.Neck => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances },
-            SlotType.Trinket => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances },
-            _ => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances },
+            SlotType.Head => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances },
+            SlotType.Chest => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances },
+            SlotType.Legs => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances },
+            SlotType.Shoulders => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances },
+            SlotType.Boots => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances },
+            SlotType.Gloves => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances, StatIds.ParryChances, StatIds.BlockChances },
+            SlotType.Belt => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances },
+            SlotType.Bracers => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances },
+            SlotType.Cloak => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances, StatIds.DodgeChances },
+            SlotType.OneHand => PossibleStatsByWeaponType(weaponType),
+            SlotType.TwoHands => PossibleStatsByWeaponType(weaponType),
+            SlotType.Ring => new StatIds[] { StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances },
+            SlotType.Neck => new StatIds[] { StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances },
+            SlotType.Trinket => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina, StatIds.CritChances, StatIds.CritDamage, StatIds.HitChances },
+            _ => new StatIds[] { StatIds.Strength, StatIds.Agility, StatIds.Intelligence, StatIds.Stamina },
         };
     }
 
@@ -143,25 +195,29 @@ public static class ItemUtils
             StatIds.Stamina => baseMultiplier * 1.5f,
             StatIds.Armor => baseMultiplier * 2f,
             StatIds.CritChances => 1f + (baseMultiplier / 100f),
-            StatIds.CritDamage => 4f + (baseMultiplier / 25f),
+            StatIds.CritDamage => 4f + (baseMultiplier / 40f),
             StatIds.HitChances => 1f + (baseMultiplier / 100f),
             StatIds.DodgeChances => 1f + (baseMultiplier / 100f),
-            StatIds.ParryChances => 1f + (baseMultiplier / 100f),
-            StatIds.BlockChances => 1f + (baseMultiplier / 100f),
+            StatIds.ParryChances => 1f + (baseMultiplier / 25f),
+            StatIds.BlockChances => 1f + (baseMultiplier / 15f),
             _ => baseMultiplier,
         };
     }
 
-    public static Stats GenerateStatsForEquipment(int level, SlotType slot, Rarities rarity)
+    public static Stats GenerateStatsForEquipment(int level, SlotType slot, Rarities rarity, GearMat mat, WeaponType weaponType = WeaponType.None)
     {
-        StatIds[] possibleStats = PossiblesStatsBySlot(slot);
+        StatIds[] possibleStats = PossiblesStatsBySlot(slot, weaponType);
         float ratio = StatsRatioBySlot(slot);
+        float armorRatio = ArmorRatioByGearMat(mat);
+        float ilvlRatio = level * Mathf.Pow(1.005f, level);
 
         Stats stats = new();
+
+        stats[StatIds.Armor] += new Stat((float)Mathf.Round(ratio * armorRatio * ilvlRatio), StatIds.Armor);
         for (int i = 0; i < StatsLoopCountByRarity(rarity); i++)
         {
             StatIds randomStat = possibleStats[Random.Range(0, possibleStats.Length)];
-            float baseMultiplier = ratio * (level * Mathf.Pow(1.015f, level));
+            float baseMultiplier = ratio * ilvlRatio;
             stats[randomStat] += new Stat((float)Mathf.Round(CalculateRatioByStat(randomStat, baseMultiplier)), randomStat);
         }
         return stats;

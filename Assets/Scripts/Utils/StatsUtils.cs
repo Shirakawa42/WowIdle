@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 
 public static class StatsUtils
 {
@@ -120,7 +119,7 @@ public static class StatsUtils
             StatIds.Agility => ValueType.MainStat,
             StatIds.Intelligence => ValueType.MainStat,
             StatIds.Stamina => ValueType.Stamina,
-            StatIds.Armor => ValueType.MainStat,
+            StatIds.Armor => ValueType.Stamina,
             StatIds.Experience => ValueType.Invisible,
             StatIds.CurrentHP => ValueType.Invisible,
             StatIds.CurrentMana => ValueType.Invisible,
@@ -138,49 +137,6 @@ public static class StatsUtils
             _ => ValueType.Invisible,
         };
     }
-}
-
-public enum StatIds
-{
-    HP,
-    CurrentHP,
-    Mana,
-    CurrentMana,
-    Level,
-    maxLevel,
-    Experience,
-    Strength,
-    Agility,
-    Intelligence,
-    Stamina,
-    Armor,
-    MainHandDamage,
-    MainHandSpeed,
-    OffHandDamage,
-    OffHandSpeed,
-    CritChances,
-    CritDamage,
-    HitChances,
-    DodgeChances,
-    ParryChances,
-    BlockChances,
-}
-
-public enum ValueType
-{
-    MainStat,
-    SecondaryStat,
-    SecondaryStatPercent,
-    Weapon,
-    Armor,
-    Name,
-    Description,
-    EquipmentType,
-    Invisible,
-    HP,
-    Mana,
-    Level,
-    Stamina
 }
 
 public class Stat

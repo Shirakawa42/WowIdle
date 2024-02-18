@@ -27,6 +27,7 @@ public class ItemTooltipManager : MonoBehaviour
     public RectTransform border;
     public TextMeshProUGUI text;
 
+
     private Image borderImage;
 
     void Awake()
@@ -43,6 +44,19 @@ public class ItemTooltipManager : MonoBehaviour
         background.sizeDelta = textSize + new Vector2(20, 20);
         border.sizeDelta = textSize + new Vector2(25, 25);
         text.rectTransform.sizeDelta = textSize;
+    }
+
+    private Vector3 ValidatePosition(Vector3 position)
+    {
+        Vector3 newPosition = position;
+        float canvasScale = Globals.gameCanvas.scaleFactor;
+
+        if (position.x - background.rect.width * canvasScale < 0)
+            newPosition.x = 0;
+        if (position.y + background.rect.height * canvasScale > Screen.height)
+            newPosition.y = Screen.height - background.rect.height * canvasScale;
+
+        return newPosition;
     }
 
     public void ShowTooltip(List<TooltipValue> tooltipValues, string borderColor, Vector3 position)
@@ -68,7 +82,8 @@ public class ItemTooltipManager : MonoBehaviour
         borderImage.color = ColorUtils.GetColorFromHex(borderColor);
         UpdateSize();
         UpdateSize();
-        tooltip.transform.position = position + new Vector3(10, -10, 0);
+
+        tooltip.transform.position = ValidatePosition(position);
     }
 
     public void HideTooltip()

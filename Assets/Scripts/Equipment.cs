@@ -7,6 +7,7 @@ public class Equipment : Slotable
     public Stats stats;
     public Rarities rarity;
     public Unit equippedUnit;
+    public GearMat gearMat;
 
     public override SlotType SlotType { get; set; }
     public override Sprite Icon { get; set; }
@@ -14,7 +15,7 @@ public class Equipment : Slotable
     public override Slot CurrentSlot { get; set; }
     public override int Level { get; set; }
 
-    public Equipment(string name, int itemLevel, SlotType slot, Sprite icon, Rarities rarity, Stats stats)
+    public Equipment(string name, int itemLevel, SlotType slot, Sprite icon, Rarities rarity, Stats stats, GearMat gearMat = GearMat.None)
     {
         equipmentName = name;
         Level = itemLevel;
@@ -23,14 +24,19 @@ public class Equipment : Slotable
         SlotType = slot;
         Color = ColorUtils.GetColorFromRarity(rarity);
         this.stats = stats;
+        this.gearMat = gearMat;
     }
 
     public virtual List<TooltipValue> GetTooltipValues()
     {
+        string gearType = SlotType.ToString();
+        if (gearMat != GearMat.None)
+            gearType += " - " + gearMat.ToString();
+
         List<TooltipValue> tooltipValues = new()
         {
             new TooltipValue(equipmentName, "", ValueType.Name, rarity),
-            new TooltipValue(SlotType.ToString(), "", ValueType.EquipmentType, rarity)
+            new TooltipValue(gearType, "", ValueType.EquipmentType, rarity)
         };
         foreach (Stat stat in stats.GetUsedStats())
             tooltipValues.Add(new TooltipValue(stat.name, stat.value.ToString(), stat.type, rarity));

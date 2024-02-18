@@ -14,12 +14,12 @@ public class UnitGears
 
     public Weapon GetMainHandWeapon()
     {
-        return (Weapon)gearSlots[14];
+        return (Weapon)gearSlots[(int)GearSlotsIds.MainHand];
     }
 
     public Weapon GetOffHandWeapon()
     {
-        return (Weapon)gearSlots[15];
+        return (Weapon)gearSlots[(int)GearSlotsIds.OffHand];
     }
 
     public Equipment GetEquipment(int gearSlotId)

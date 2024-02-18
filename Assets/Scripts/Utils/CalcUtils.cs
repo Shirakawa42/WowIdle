@@ -2,18 +2,25 @@ using UnityEngine;
 
 public static class CalcUtils
 {
-    public static float CalculateWeaponDamage(Weapon weapon, Stats stats, bool mainHand)
+    public static float CalculateWeaponDamage(Weapon weapon, Unit unit, bool mainHand)
     {
         if (weapon == null)
             return 0;
 
         float offHandMultiplier = 0.75f;
-        if (weapon.SlotType == SlotType.TwoHands)
-            offHandMultiplier = 0.25f;
+        float damageMultiplier = 1f;
+
+        Weapon mainHandWeapon = unit.gears.GetMainHandWeapon();
+        Weapon offHandWeapon = unit.gears.GetOffHandWeapon();
+        if (mainHandWeapon != null && offHandWeapon != null)
+        {
+            if (mainHandWeapon.SlotType == SlotType.TwoHands || offHandWeapon.SlotType == SlotType.TwoHands)
+                damageMultiplier = .2f;
+        }
 
         if (mainHand)
-            return Mathf.RoundToInt(weapon.damages + stats[StatIds.Strength].value);
+            return Mathf.RoundToInt((weapon.damages + unit.stats[StatIds.Strength].value) * damageMultiplier);
         else
-            return Mathf.RoundToInt((weapon.damages + stats[StatIds.Strength].value) * offHandMultiplier);
+            return Mathf.RoundToInt((weapon.damages + unit.stats[StatIds.Strength].value) * offHandMultiplier * damageMultiplier);
     }
 }

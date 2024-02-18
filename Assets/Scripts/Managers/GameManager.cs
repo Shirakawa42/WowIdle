@@ -3,10 +3,12 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public Canvas gameCanvas;
     private float tickCooldown = Globals.tickRate;
 
     void Awake() {
         Globals.gameManager = this;
+        Globals.gameCanvas = gameCanvas;
     }
 
     void Start()

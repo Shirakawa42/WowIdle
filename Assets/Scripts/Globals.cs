@@ -10,6 +10,7 @@ public static class Globals
     public static Slot selectedSlot = null;
     public static List<Unit> activeHeroes = new();
     public static List<Unit> activeEnemies = new();
+    public static Canvas gameCanvas = null;
     public static GameManager gameManager = null;
     public static InventoryManager inventoryManager = null;
     public static HeroesInventoryManager heroesInventoryManager = null;
