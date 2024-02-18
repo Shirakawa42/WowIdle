@@ -4,7 +4,7 @@ public abstract class Slotable
 {
     public abstract SlotType SlotType { get; set; }
     public abstract Sprite Icon { get; set; }
-    public abstract Color Color { get; set; }
+    public abstract string Color { get; set; }
     public abstract Slot CurrentSlot { get; set; }
     public abstract int Level { get; set; }
 

@@ -17,4 +17,5 @@ public static class Globals
     public static StatsPanelManager statsPanelManager = null;
     public static EnemySlotsManager enemySlotsManager = null;
     public static GearSlotsManager gearSlotsManager = null;
+    public static ResourcesManager resourcesManager = null;
 }

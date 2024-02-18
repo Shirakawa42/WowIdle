@@ -13,10 +13,10 @@ public class ProgressBar : MonoBehaviour
         slider = GetComponent<Slider>();
     }
 
-    public void UpdateValues(int max, int current, Color color)
+    public void UpdateValues(int max, int current, string color)
     {
         slider.maxValue = max;
         slider.value = current;
-        slider.fillRect.GetComponent<Image>().color = color;
+        slider.fillRect.GetComponent<Image>().color = ColorUtils.GetColorFromHex(color);
     }
 }

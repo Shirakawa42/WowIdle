@@ -18,18 +18,13 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
 
     private Slotable slotable = null;
 
-    public Slotable SetSlotable(Slotable newslotable, bool dontUnequip = false, bool dontEquip = false)
+    public Slotable SetSlotable(Slotable newslotable, bool dontEquip = false)
     {
         Slotable oldSlotable = slotable;
 
         newslotable?.SetCurrentSlot(this);
-        if (equippedSlot)
-        {
-            if (!dontUnequip)
-                slotable?.OnUnequip();
-            if (!dontEquip)
-                newslotable?.OnEquip();
-        }
+        if (equippedSlot && !dontEquip)
+            newslotable?.OnEquip();
         slotable = newslotable;
         draggableItem.SetActive(false);
         if (newslotable != null)
@@ -39,9 +34,16 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
             draggableItem.GetComponent<DraggedObject>().slotable = newslotable;
             draggableItem.SetActive(true);
             foreach (Image image in coloredImages)
-                image.color = newslotable.Color;
+                image.color = ColorUtils.GetColorFromHex(newslotable.Color);
         }
         return oldSlotable;
+    }
+
+    public void EmptySlot()
+    {
+        if (equippedSlot)
+            slotable?.OnUnequip();
+        SetSlotable(null);
     }
 
     public Vector2 GetTopLeftCorner()
@@ -113,8 +115,14 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
             SetSelected();
         }
 
-        Slotable newSlotable = droppedSlot.SetSlotable(slotable);
-        SetSlotable(newSlotable, true);
+        Slotable newSlotable = droppedSlot.slotable;
+        Slotable oldSlotable = slotable;
+
+        droppedSlot.EmptySlot();
+        EmptySlot();
+
+        droppedSlot.SetSlotable(oldSlotable);
+        SetSlotable(newSlotable);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -169,8 +177,8 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
         if (slotType == SlotType.AnyGear && !IsUnitSlot(slot))
             return true;
 
-        if ((slotType == SlotType.MainHand || slotType == SlotType.OffHand)
-            && (slot == SlotType.MainHand || slot == SlotType.OffHand))
+        if ((slotType == SlotType.OneHand || slotType == SlotType.TwoHands)
+            && (slot == SlotType.OneHand || slot == SlotType.TwoHands))
             return true;
 
         return false;

@@ -24,7 +24,6 @@ public class InventoryManager : MonoBehaviour
                 slot.GetComponent<RectTransform>().anchorMin = inventoryPanel.transform.GetChild(j).GetComponent<RectTransform>().anchorMin;
                 slot.GetComponent<RectTransform>().anchoredPosition = inventoryPanel.transform.GetChild(j).GetComponent<RectTransform>().anchoredPosition + new Vector2(85 * i, 0);
             }
-
         }
         foreach (Transform child in inventoryPanel.transform)
         {

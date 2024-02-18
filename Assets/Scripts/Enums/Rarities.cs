@@ -1,5 +1,6 @@
 public enum Rarities
 {
+    Poor,
     Common,
     Uncommon,
     Rare,

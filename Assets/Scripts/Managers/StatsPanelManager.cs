@@ -5,25 +5,14 @@ using UnityEngine;
 
 public class StatsPanelManager : MonoBehaviour
 {
-    public GameObject statsNames;
-    public GameObject statsValues;
-
-    private List<TMP_Text>  names;
-    private List<TMP_Text> values;
+    public TextMeshProUGUI statsNames;
+    public TextMeshProUGUI statsValues;
 
     void Awake()
     {
         Globals.statsPanelManager = this;
-        names = new List<TMP_Text>();
-        values = new List<TMP_Text>();
-        foreach (Transform child in statsNames.transform)
-        {
-            names.Add(child.GetComponent<TMP_Text>());
-        }
-        foreach (Transform child in statsValues.transform)
-        {
-            values.Add(child.GetComponent<TMP_Text>());
-        }
+        statsNames.SetText("");
+        statsValues.SetText("");
     }
 
     public void UpdateStats(Unit unit)
@@ -31,29 +20,20 @@ public class StatsPanelManager : MonoBehaviour
         if (unit == null)
             return;
 
-        Stats stats = unit.stats;
-        UnitStats unitStats = unit.unitStats;
+        Stat[] stats = unit.stats.GetUsedStats();
 
-        (string, int)[] allUnitStats = unitStats.GetAllStats();
-        (string, int)[] allStats = stats.GetAllStats();
+        string text = "<align=left>";
+        foreach (Stat stat in stats)
+            if (stat.type != ValueType.Invisible)
+                text += $"<color={ColorUtils.GetColorFromValueType(stat.type)}>{stat.name}</color>\n";
+        text += "</align>";
+        statsNames.SetText(text);
 
-        (string, int)[] concatenedStats = allUnitStats.Concat(allStats).ToArray();
-
-        for (int i = 0; i < names.Count; i++)
-        {
-            if (i >= concatenedStats.Length)
-            {
-                names[i].gameObject.SetActive(false);
-                values[i].gameObject.SetActive(false);
-                continue;
-            }
-            names[i].gameObject.SetActive(true);
-            values[i].gameObject.SetActive(true);
-            names[i].text = concatenedStats[i].Item1;
-            values[i].text = concatenedStats[i].Item2.ToString();
-            Color color = unitStats.GetStatColor(concatenedStats[i].Item1);
-            names[i].color = color;
-            values[i].color = color;
-        }
+        text = "<align=right>";
+        foreach (Stat stat in stats)
+            if (stat.type != ValueType.Invisible)
+                text += $"<color={ColorUtils.GetColorFromValueType(stat.type)}>{stat.value}{(stat.type == ValueType.SecondaryStatPercent ? "%" : "")}</color>\n";
+        text += "</align>";
+        statsValues.SetText(text);
     }
 }

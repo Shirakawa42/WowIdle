@@ -1,57 +1,52 @@
 using System;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class Stats
 {
-    public int strength;
-    public int agility;
-    public int intelligence;
-    public int stamina;
-    public int armor;
+    private readonly Stat[] stats;
 
-    public Stats(int strength, int agility, int intelligence, int stamina, int armor)
+    public Stats()
     {
-        this.strength = strength;
-        this.agility = agility;
-        this.intelligence = intelligence;
-        this.stamina = stamina;
-        this.armor = armor;
+        stats = new Stat[Enum.GetNames(typeof(StatIds)).Length];
+        for (int i = 0; i < stats.Length; i++)
+            stats[i] = new Stat(0, (StatIds)i);
     }
 
-    public (string, int)[] GetAllStats()
+    public Stats(Stat[] defaultStats)
     {
-        return new (string, int)[]
-        {
-            ( "Strength", strength ),
-            ( "Agility", agility ),
-            ( "Intelligence", intelligence ),
-            ( "Stamina", stamina ),
-            ( "Armor", armor)
-        };
+        stats = new Stat[Enum.GetNames(typeof(StatIds)).Length];
+        for (int i = 0; i < stats.Length; i++)
+            stats[i] = new Stat(0, (StatIds)i);
+
+        foreach (Stat stat in defaultStats)
+            stats[(int)stat.id] = stat;
     }
 
-    public Color GetStatColor(string statName)
+    public Stat[] GetAllStats()
     {
-        //TODO
-        return statName switch
-        {
-            "Strength" => Color.red,
-            "Agility" => Color.green,
-            "Intelligence" => Color.blue,
-            "Stamina" => Color.yellow,
-            _ => Color.white,
-        };
+        return stats;
     }
 
-    public static Stats operator +(Stats a, Stats b)
+    public Stat[] GetUsedStats()
     {
-        return new Stats(a.strength + b.strength, a.agility + b.agility, a.intelligence + b.intelligence, a.stamina + b.stamina, a.armor + b.armor);
+        return Array.FindAll(stats, s => s.value != 0);
     }
 
-    public static Stats operator -(Stats a, Stats b)
+    public Stat this[StatIds index]
     {
-        return new Stats(a.strength - b.strength, a.agility - b.agility, a.intelligence - b.intelligence, a.stamina - b.stamina, a.armor - b.armor);
+        get => stats[(int)index];
+        set => stats[(int)index] = value;
+    }
+
+    public void AddStats(Stat[] stats)
+    {
+        foreach (Stat stat in stats)
+            this[stat.id] += stat;
+    }
+
+    public void RemoveStats(Stat[] stats)
+    {
+        foreach (Stat stat in stats)
+            this[stat.id] -= stat;
     }
 
 }

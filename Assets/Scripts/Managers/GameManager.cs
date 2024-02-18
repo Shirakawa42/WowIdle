@@ -13,9 +13,6 @@ public class GameManager : MonoBehaviour
     {
         Globals.enemySlotsManager.AddEnemy(new Unit(
             "Joshua",
-            8,
-            new UnitStats(),
-            new Stats(2, 2, 2, 2, 0),
             UnitClasses.Enemy
         ));
         AddHeroToInventory();
@@ -23,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     public void AddItemToInventory()
     {
-        Equipment equipment = ItemUtils.GenerateEquipment(Random.Range(1, 240), ItemUtils.GenerateRandomRarity(), ItemUtils.GenerateRandomSlotType());
+        Equipment equipment = ItemUtils.GenerateEquipment(Random.Range(120, 120));
         Globals.inventoryManager.AddItem(equipment);
     }
 
@@ -31,16 +28,10 @@ public class GameManager : MonoBehaviour
     {
         Globals.heroesInventoryManager.AddHero(new Unit(
             "MacLovin",
-            8,
-            new UnitStats(),
-            new Stats(5, 5, 5, 5, 0),
             UnitClasses.Shaman
         ));
         Globals.heroesInventoryManager.AddHero(new Unit(
             "JeanPascal",
-            2,
-            new UnitStats(),
-            new Stats(5, 5, 5, 5, 0),
             UnitClasses.Shaman
         ));
     }
@@ -58,6 +49,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             AddItemToInventory();
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Debug.Log(Globals.selectedHero.gears.GetMainHandWeapon()?.equipmentName ?? "No main hand weapon equipped");
+            Debug.Log(Globals.selectedHero.gears.GetOffHandWeapon()?.equipmentName ?? "No off hand weapon equipped");
         }
         tickCooldown -= Time.deltaTime;
         if (tickCooldown <= 0)

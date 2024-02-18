@@ -4,31 +4,28 @@ using UnityEngine;
 public class Unit : Slotable
 {
     public string unitName;
-    public UnitStats unitStats;
     public Stats stats;
     public UnitClasses unitClass;
     public Unit target = null;
     public UnitGears gears = new();
-    public Weapon defaultWeapon = new("Fists", 1, SlotType.MainHand, new Stats(0, 0, 0, 0, 0), null, Rarities.Common, 5, 1f);
+    public Weapon defaultWeapon = new("Fists", 1, SlotType.OneHand, null, Rarities.Common, new Stats(new Stat[0]), 1f, 1f);
     public override SlotType SlotType { get; set; }
     public override Sprite Icon { get; set; }
-    public override Color Color { get; set; }
+    public override string Color { get; set; }
     public override Slot CurrentSlot { get; set; }
 
     public override int Level
     {
-        get => unitStats.level;
-        set => unitStats.level = value;
+        get => (int)stats[StatIds.Level].value;
+        set => throw new System.NotSupportedException();
     }
 
-    public Unit(string unitName, int level, UnitStats unitStats, Stats stats, UnitClasses unitClass)
+    public Unit(string unitName, UnitClasses unitClass)
     {
         this.unitName = unitName;
-        this.unitStats = unitStats;
-        this.stats = stats;
+        stats = new Stats(StatsUtils.GetDefaultStatsFromUnitClass(unitClass));
         Icon = Resources.Load<Sprite>("Textures/ClassIcons/" + unitClass.ToString());
         this.unitClass = unitClass;
-        Level = level;
         SlotType = (unitClass == UnitClasses.Enemy) ? SlotType.Enemy : SlotType.Hero;
         Color = ColorUtils.GetColorFromClass(unitClass);
         RecalculateUnitStats();
@@ -55,8 +52,8 @@ public class Unit : Slotable
         ProgressBar healthBar = CurrentSlot.extras.Find(x => x.name == "HpBar").GetComponent<ProgressBar>();
         ProgressBar manaBar = CurrentSlot.extras.Find(x => x.name == "ResourceBar").GetComponent<ProgressBar>();
 
-        healthBar.UpdateValues(unitStats.maxHealth, unitStats.currentHealth, Color.red);
-        manaBar.UpdateValues(unitStats.maxResource, unitStats.currentResource, Color.cyan);
+        healthBar.UpdateValues((int)stats[StatIds.HP].value, (int)stats[StatIds.CurrentHP].value, "#FF0000");
+        manaBar.UpdateValues((int)stats[StatIds.Mana].value, (int)stats[StatIds.CurrentMana].value, "#0000FF");
     }
 
     public void PickTarget()
@@ -83,33 +80,37 @@ public class Unit : Slotable
 
     public void RecalculateUnitStats()
     {
-        unitStats.maxHealth = 300 + Level * 10 + stats.stamina * 5;
-        unitStats.maxResource = 100 + Level * 10 + stats.intelligence * 5;
+        stats[StatIds.HP].value = StatsUtils.baseHP + stats[StatIds.Stamina].value * 10;
+        stats[StatIds.Mana].value = StatsUtils.baseMana + stats[StatIds.Intelligence].value * 10;
+        stats[StatIds.CurrentHP].value = stats[StatIds.HP].value;
+        stats[StatIds.CurrentMana].value = stats[StatIds.Mana].value;
+        
+        if (gears.GetMainHandWeapon() == null && gears.GetOffHandWeapon() == null)
+        {
+            stats[StatIds.MainHandDamage].value = defaultWeapon.damages;
+            stats[StatIds.MainHandSpeed].value = defaultWeapon.cooldown;
+            stats[StatIds.OffHandDamage].value = 0;
+            stats[StatIds.OffHandSpeed].value = 0;
+        }
+        else
+        {
+            stats[StatIds.MainHandDamage].value = CalcUtils.CalculateWeaponDamage(gears.GetMainHandWeapon(), stats, true);
+            stats[StatIds.MainHandSpeed].value = gears.GetMainHandWeapon()?.cooldown ?? 0;
+            stats[StatIds.OffHandDamage].value = CalcUtils.CalculateWeaponDamage(gears.GetOffHandWeapon(), stats, false);
+            stats[StatIds.OffHandSpeed].value = gears.GetOffHandWeapon()?.cooldown ?? 0;
+        }
     }
 
     public void RegenUnit()
     {
-        unitStats.currentHealth = unitStats.maxHealth;
-        unitStats.currentResource = unitStats.maxResource;
+        stats[StatIds.CurrentHP].value = stats[StatIds.HP].value;
+        stats[StatIds.CurrentMana].value = stats[StatIds.Mana].value;
     }
 
-    public void LevelUp()
+    public void TakeDamage(float damage, DamageType damageType)
     {
-        if (unitStats.level < unitStats.maxLevel)
-        {
-            unitStats.level++;
-            RecalculateUnitStats();
-            if (CurrentSlot != null)
-                CurrentSlot.UpdateLevel();
-        }
-    }
-
-    public void TakeDamage(int damage, DamageType damageType)
-    {
-        //TODO
-        Debug.Log(unitName + " took " + damage + " " + damageType + " damage");
-        unitStats.currentHealth -= damage;
-        if (unitStats.currentHealth <= 0)
+        stats[StatIds.CurrentHP].value -= damage;
+        if (stats[StatIds.CurrentHP].value <= 0)
             Die();
     }
 
@@ -117,6 +118,8 @@ public class Unit : Slotable
     {
         //TODO
         Debug.Log(unitName + " died");
+        if (unitClass == UnitClasses.Enemy)
+            Globals.resourcesManager.AddMoney(Level * Random.Range(5000, 50000));
         RegenUnit();
         UpdateBars();
     }
@@ -140,7 +143,7 @@ public class Unit : Slotable
     {
         List<TooltipValue> tooltipValues = new()
         {
-            new TooltipValue(unitName, "(lvl " + Level.ToString() + ")", TooltipValueType.Name),
+            new TooltipValue(unitName, "(lvl " + Level.ToString() + ")", ValueType.Name),
         };
         Globals.itemTooltipManager.ShowTooltip(tooltipValues, Color, CurrentSlot.GetTopLeftCorner());
     }

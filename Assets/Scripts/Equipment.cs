@@ -10,33 +10,30 @@ public class Equipment : Slotable
 
     public override SlotType SlotType { get; set; }
     public override Sprite Icon { get; set; }
-    public override Color Color { get; set; }
+    public override string Color { get; set; }
     public override Slot CurrentSlot { get; set; }
     public override int Level { get; set; }
 
-    public Equipment(string name, int itemLevel, SlotType slot, Stats stats, Sprite icon, Rarities rarity)
+    public Equipment(string name, int itemLevel, SlotType slot, Sprite icon, Rarities rarity, Stats stats)
     {
-        this.equipmentName = name;
-        this.Level = itemLevel;
-        this.stats = stats;
-        this.Icon = icon;
+        equipmentName = name;
+        Level = itemLevel;
+        Icon = icon;
         this.rarity = rarity;
-        this.SlotType = slot;
-        this.Color = ColorUtils.GetColorFromRarity(rarity);
+        SlotType = slot;
+        Color = ColorUtils.GetColorFromRarity(rarity);
+        this.stats = stats;
     }
 
-    public List<TooltipValue> GetTooltipValues()
+    public virtual List<TooltipValue> GetTooltipValues()
     {
         List<TooltipValue> tooltipValues = new()
         {
-            new TooltipValue(equipmentName, "", TooltipValueType.Name, rarity),
-            new TooltipValue(SlotType.ToString(), "", TooltipValueType.EquipmentType, rarity)
+            new TooltipValue(equipmentName, "", ValueType.Name, rarity),
+            new TooltipValue(SlotType.ToString(), "", ValueType.EquipmentType, rarity)
         };
-        if (stats.armor > 0) tooltipValues.Add(new TooltipValue("Armor", stats.armor.ToString(), TooltipValueType.Armor));
-        if (stats.strength > 0) tooltipValues.Add(new TooltipValue("Strength", stats.strength.ToString(), TooltipValueType.MainStat));
-        if (stats.agility > 0) tooltipValues.Add(new TooltipValue("Agility", stats.agility.ToString(), TooltipValueType.MainStat));
-        if (stats.intelligence > 0) tooltipValues.Add(new TooltipValue("Intelligence", stats.intelligence.ToString(), TooltipValueType.MainStat));
-        if (stats.stamina > 0) tooltipValues.Add(new TooltipValue("Stamina", stats.stamina.ToString(), TooltipValueType.MainStat));
+        foreach (Stat stat in stats.GetUsedStats())
+            tooltipValues.Add(new TooltipValue(stat.name, stat.value.ToString(), stat.type, rarity));
         return tooltipValues;
     }
 
@@ -45,7 +42,7 @@ public class Equipment : Slotable
         if (equippedUnit != null) return;
         equippedUnit = Globals.selectedHero;
         equippedUnit.gears.Equip(CurrentSlot.id, this);
-        equippedUnit.stats += stats;
+        equippedUnit.stats.AddStats(stats.GetUsedStats());
         equippedUnit.RecalculateUnitStats();
         Globals.statsPanelManager.UpdateStats(equippedUnit);
     }
@@ -53,7 +50,7 @@ public class Equipment : Slotable
     public override void OnUnequip()
     {
         if (equippedUnit == null) return;
-        equippedUnit.stats -= stats;
+        equippedUnit.stats.RemoveStats(stats.GetUsedStats());
         equippedUnit.gears.Unequip(CurrentSlot.id);
         equippedUnit.RecalculateUnitStats();
         Globals.statsPanelManager.UpdateStats(equippedUnit);
