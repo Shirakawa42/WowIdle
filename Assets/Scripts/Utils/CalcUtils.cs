@@ -19,8 +19,8 @@ public static class CalcUtils
         }
 
         if (mainHand)
-            return Mathf.RoundToInt((weapon.damages + unit.stats[StatIds.Strength].value) * damageMultiplier);
+            return Mathf.RoundToInt((weapon.damages + weapon.damages * (unit.stats[StatIds.Strength].value / 10)) * damageMultiplier);
         else
-            return Mathf.RoundToInt((weapon.damages + unit.stats[StatIds.Strength].value) * offHandMultiplier * damageMultiplier);
+            return Mathf.RoundToInt((weapon.damages + weapon.damages * (unit.stats[StatIds.Strength].value / 10)) * offHandMultiplier * damageMultiplier);
     }
 }

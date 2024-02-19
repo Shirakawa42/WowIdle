@@ -1,6 +1,6 @@
 using System;
 
-public class Stats
+public class Stats : ICloneable
 {
     private readonly Stat[] stats;
 
@@ -47,6 +47,11 @@ public class Stats
     {
         foreach (Stat stat in stats)
             this[stat.id] -= stat;
+    }
+
+    public object Clone()
+    {
+        return new Stats(GetUsedStats());
     }
 
 }

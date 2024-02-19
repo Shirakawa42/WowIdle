@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ProgressBar : MonoBehaviour
 {
     public Image filledImage;
+    public TMP_Text text;
     private Slider slider;
 
     void Awake()
@@ -18,5 +20,6 @@ public class ProgressBar : MonoBehaviour
         slider.maxValue = max;
         slider.value = current;
         slider.fillRect.GetComponent<Image>().color = ColorUtils.GetColorFromHex(color);
+        text.text = current + " / " + max;
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, IBeginDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     public GameObject draggableItem;
-    public List<GameObject> extras = new();
+    public List<SlotExtra> extras = new();
     public List<Image> coloredImages = new();
     public SlotType slotType;
     public bool equippedSlot = true;
@@ -23,6 +23,12 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
         Slotable oldSlotable = slotable;
 
         newslotable?.SetCurrentSlot(this);
+
+        if (equippedSlot && newslotable != null)
+            EnableExtras(true);
+        else
+            EnableExtras(false);
+
         if (equippedSlot && !dontEquip)
             newslotable?.OnEquip();
         slotable = newslotable;
@@ -54,9 +60,11 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
 
     public void EnableExtras(bool enable)
     {
-        foreach (GameObject extra in extras)
+        foreach (SlotExtra extra in extras)
         {
-            extra.SetActive(enable);
+            if (extra.heroOnly && slotType != SlotType.Hero)
+                continue;
+            extra.gameObject.SetActive(enable);
         }
     }
 

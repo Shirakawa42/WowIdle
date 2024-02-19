@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Equipment : Slotable
+public class Equipment : Slotable, ICloneable
 {
     public string equipmentName;
     public Stats stats;
@@ -76,5 +77,10 @@ public class Equipment : Slotable
     public override void SetCurrentSlot(Slot slot)
     {
         CurrentSlot = slot;
+    }
+
+    public object Clone()
+    {
+        return new Equipment(equipmentName, Level, SlotType, Icon, rarity, (Stats)stats.Clone(), gearMat);
     }
 }

@@ -35,7 +35,6 @@ public class ResourcesManager : MonoBehaviour
     public void AddMoney(int amount)
     {
         money += amount;
-        Debug.Log("money: " + money);
         UpdateText();
     }
 }

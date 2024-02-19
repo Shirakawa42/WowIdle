@@ -1,4 +1,6 @@
-public class UnitGears
+using System;
+
+public class UnitGears : ICloneable
 {
     private readonly Equipment[] gearSlots = new Equipment[16];
 
@@ -25,5 +27,16 @@ public class UnitGears
     public Equipment GetEquipment(int gearSlotId)
     {
         return gearSlots[gearSlotId];
+    }
+
+    public object Clone()
+    {
+        UnitGears unitGears = new();
+        for (int i = 0; i < gearSlots.Length; i++)
+        {
+            if (gearSlots[i] != null)
+                unitGears.gearSlots[i] = (Equipment)gearSlots[i].Clone();
+        }
+        return unitGears;
     }
 }

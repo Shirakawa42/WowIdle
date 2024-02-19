@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public Canvas gameCanvas;
-    private float tickCooldown = Globals.tickRate;
+    
 
     void Awake() {
         Globals.gameManager = this;
@@ -13,38 +13,21 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        Globals.enemySlotsManager.AddEnemy(new Unit(
-            "Joshua",
-            UnitClasses.Enemy
-        ));
         AddHeroToInventory();
     }
 
     public void AddItemToInventory()
     {
-        Equipment equipment = ItemUtils.GenerateEquipment(Random.Range(120, 120));
+        Equipment equipment = ItemUtils.GenerateEquipment(Random.Range(1, 20));
         Globals.inventoryManager.AddItem(equipment);
     }
 
     public void AddHeroToInventory()
     {
         Globals.heroesInventoryManager.AddHero(new Unit(
-            "MacLovin",
+            "Shirah",
             UnitClasses.Shaman
         ));
-        Globals.heroesInventoryManager.AddHero(new Unit(
-            "JeanPascal",
-            UnitClasses.Shaman
-        ));
-    }
-
-    private void Tick()
-    {
-        Debug.Log($"Tick! {Globals.activeHeroes.Count} heroes and {Globals.activeEnemies.Count} enemies.");
-        foreach (Unit hero in Globals.activeHeroes)
-            hero.Tick();
-        foreach (Unit enemy in Globals.activeEnemies)
-            enemy.Tick();
     }
 
     void Update() {
@@ -52,16 +35,9 @@ public class GameManager : MonoBehaviour
         {
             AddItemToInventory();
         }
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.D))
         {
-            Debug.Log(Globals.selectedHero.gears.GetMainHandWeapon()?.equipmentName ?? "No main hand weapon equipped");
-            Debug.Log(Globals.selectedHero.gears.GetOffHandWeapon()?.equipmentName ?? "No off hand weapon equipped");
-        }
-        tickCooldown -= Time.deltaTime;
-        if (tickCooldown <= 0)
-        {
-            Tick();
-            tickCooldown += Globals.tickRate;
+            Globals.dungeonManager.StartDungeon(new GreenForest());
         }
     }
 }
