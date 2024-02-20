@@ -1726,6 +1726,7 @@ GameObject:
   - component: {fileID: 391765849}
   - component: {fileID: 391765850}
   - component: {fileID: 391765851}
+  - component: {fileID: 391765852}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1879,6 +1880,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemiesSlots: {fileID: 1853877767}
   heroesSlots: {fileID: 1456504854}
+--- !u!114 &391765852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391765841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75165854f49fb8f43bb6d247f7d643da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floatingDamagePrefab: {fileID: 4830212173162698082, guid: 669ed387031b73d48b4982006505da3b, type: 3}
+  floatingDamagesParent: {fileID: 2038017397}
 --- !u!1 &393984765
 GameObject:
   m_ObjectHideFlags: 0
@@ -2259,6 +2274,7 @@ RectTransform:
   - {fileID: 1589490856}
   - {fileID: 1568819467}
   - {fileID: 612585785}
+  - {fileID: 2038017397}
   - {fileID: 1179202550}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6184,6 +6200,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2033928602}
   m_CullTransparentMesh: 1
+--- !u!1 &2038017396
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2038017397}
+  m_Layer: 5
+  m_Name: FloatingDamages
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2038017397
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2038017396}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 562461479}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2080298885 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3250083878468485641, guid: 5cb029dd91a16ec4190eebaa0e57cfe0, type: 3}

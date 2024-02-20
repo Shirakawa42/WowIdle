@@ -19,4 +19,5 @@ public static class Globals
     public static GearSlotsManager gearSlotsManager = null;
     public static ResourcesManager resourcesManager = null;
     public static DungeonManager dungeonManager = null;
+    public static FloatingDamagesManager floatingDamagesManager = null;
 }

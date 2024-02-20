@@ -51,6 +51,7 @@ public class Equipment : Slotable, ICloneable
         equippedUnit.gears.Equip(CurrentSlot.id, this);
         equippedUnit.Stats.AddStats(stats.GetUsedStats());
         equippedUnit.RecalculateUnitStats();
+        equippedUnit.RegenUnit();
         Globals.statsPanelManager.UpdateStats(equippedUnit);
     }
 
@@ -60,6 +61,7 @@ public class Equipment : Slotable, ICloneable
         equippedUnit.Stats.RemoveStats(stats.GetUsedStats());
         equippedUnit.gears.Unequip(CurrentSlot.id);
         equippedUnit.RecalculateUnitStats();
+        equippedUnit.RegenUnit();
         Globals.statsPanelManager.UpdateStats(equippedUnit);
         equippedUnit = null;
     }

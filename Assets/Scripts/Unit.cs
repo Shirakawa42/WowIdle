@@ -47,8 +47,15 @@ public abstract class Unit : Slotable, ICloneable
 
     public void RegenUnit(bool force = false)
     {
+        if (Stats[StatIds.CurrentHP].value > Stats[StatIds.HP].value)
+            Stats[StatIds.CurrentHP].value = Stats[StatIds.HP].value;
+        if (Stats[StatIds.CurrentMana].value > Stats[StatIds.Mana].value)
+            Stats[StatIds.CurrentMana].value = Stats[StatIds.Mana].value;
         if (!force && IsActive == true)
+        {
+            UpdateBars();
             return;
+        }
         Stats[StatIds.CurrentHP].value = Stats[StatIds.HP].value;
         Stats[StatIds.CurrentMana].value = Stats[StatIds.Mana].value;
         UpdateBars();
@@ -56,6 +63,7 @@ public abstract class Unit : Slotable, ICloneable
 
     public void TakeDamage(float damage, DamageType damageType)
     {
+        Globals.floatingDamagesManager.CreateFloatingDamage(CurrentSlot.transform.position, (int)damage, FloatingDamageType.AutoDamage, false);
         Stats[StatIds.CurrentHP].value -= damage;
         if (Stats[StatIds.CurrentHP].value <= 0)
             Die();

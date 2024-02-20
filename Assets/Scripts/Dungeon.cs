@@ -20,7 +20,7 @@ public struct LootProbabilities
     public float epic;
     public float legendary;
 
-    public LootProbabilities(float nothing = 100f, float poor = 0f, float common = 0f, float uncommon = 0f, float rare = 0f, float epic = 0f, float legendary = 0f) // probabilities should add up to 100
+    public LootProbabilities(float nothing = 0f, float poor = 0f, float common = 0f, float uncommon = 0f, float rare = 0f, float epic = 0f, float legendary = 0f) // probabilities should add up to 100
     {
         this.nothing = nothing;
         this.poor = poor;
