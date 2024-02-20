@@ -33,6 +33,7 @@ public class InventoryManager : MonoBehaviour
 
     public void AddItem(Equipment equipment)
     {
+        if (equipment == null) return;
         foreach (Slot slot in inventoryslots)
         {
             if (slot.IsEmpty())

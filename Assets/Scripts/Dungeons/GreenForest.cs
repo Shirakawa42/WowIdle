@@ -25,4 +25,9 @@ public class GreenForest : Dungeon
         new(new List<string> { "Adept", "Adept", "Adept", "Kobold", "Kobold", "Kobold", "Boss" }),
     };
 
+    public override LevelRange LootLevelRange => new(1, 4);
+
+    public override LootProbabilities LootProbabilities => new(nothing: 25f, poor: 50f, common: 25f);
+
+    public override LootProbabilities BossLootProbabilities => new(uncommon: 100f);
 }

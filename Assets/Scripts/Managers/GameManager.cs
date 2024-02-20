@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
 
     public void AddItemToInventory()
     {
-        Equipment equipment = ItemUtils.GenerateEquipment(Random.Range(1, 20));
+        Equipment equipment = ItemUtils.GenerateEquipmentOPTOREMOVE(Random.Range(1, 20));
         Globals.inventoryManager.AddItem(equipment);
     }
 

@@ -68,8 +68,17 @@ public class DungeonManager : MonoBehaviour
         enemiesToSpawn.Enqueue(unit);
     }
 
+    public void ItemLoot(Enemy enemy)
+    {
+        if (!enemy.isBoss)
+            Globals.inventoryManager.AddItem(ItemUtils.GenerateEquipment(currentDungeon.LootLevelRange, currentDungeon.LootProbabilities));
+        else
+            Globals.inventoryManager.AddItem(ItemUtils.GenerateEquipment(currentDungeon.LootLevelRange, currentDungeon.BossLootProbabilities));
+    }
+
     public void OnEnemyDeath(Enemy enemy)
     {
+        ItemLoot(enemy);
         activeEnemies.Remove(enemy);
         foreach (Unit hero in activeHeroes)
             hero.AddXP(enemy.droppedExp);

@@ -52,7 +52,7 @@ public static class ItemUtils
         return (WeaponType)Random.Range(0, 4);
     }
 
-    public static Equipment GenerateEquipment(int itemLevel)
+    public static Equipment GenerateEquipmentOPTOREMOVE(int itemLevel)
     {
         SlotType slot = GenerateRandomSlotType();
         Rarities rarity = GenerateRandomRarity();
@@ -63,6 +63,66 @@ public static class ItemUtils
             float weaponSpeed = (float)Math.Round(Random.Range(0.5f, 2f), 2);
             WeaponType weaponType = GenerateRandomWeaponType();
             float damages = Mathf.Round(itemLevel * weaponSpeed * Mathf.Pow(1.005f, itemLevel) * StatsRatioBySlot(slot));
+            if (weaponType == WeaponType.Shield)
+                damages *= .1f;
+            return new Weapon(
+                GenerateEquipmentName(slot, itemLevel),
+                itemLevel,
+                slot,
+                GenerateIcon(slot),
+                rarity,
+                GenerateStatsForEquipment(itemLevel, slot, rarity, weaponType == WeaponType.Shield ? GearMat.Shield : GearMat.None, weaponType),
+                damages,
+                weaponSpeed,
+                weaponType
+            );
+        }
+        return new(
+            GenerateEquipmentName(slot, itemLevel),
+            itemLevel,
+            slot,
+            GenerateIcon(slot),
+            rarity,
+            GenerateStatsForEquipment(itemLevel, slot, rarity, gearMat),
+            gearMat
+        );
+    }
+
+    public static Rarities GetRarityFromLootProbabilities(LootProbabilities lootProbabilities)
+    {
+        float random = Random.Range(0f, 100f);
+        if (random <= lootProbabilities.nothing)
+            return Rarities.Nothing;
+        if (random <= lootProbabilities.poor + lootProbabilities.nothing)
+            return Rarities.Poor;
+        if (random <= lootProbabilities.common + lootProbabilities.poor + lootProbabilities.nothing)
+            return Rarities.Common;
+        if (random <= lootProbabilities.uncommon + lootProbabilities.common + lootProbabilities.poor + lootProbabilities.nothing)
+            return Rarities.Uncommon;
+        if (random <= lootProbabilities.rare + lootProbabilities.uncommon + lootProbabilities.common + lootProbabilities.poor + lootProbabilities.nothing)
+            return Rarities.Rare;
+        if (random <= lootProbabilities.epic + lootProbabilities.rare + lootProbabilities.uncommon + lootProbabilities.common + lootProbabilities.poor + lootProbabilities.nothing)
+            return Rarities.Epic;
+        if (random <= lootProbabilities.legendary + lootProbabilities.epic + lootProbabilities.rare + lootProbabilities.uncommon + lootProbabilities.common + lootProbabilities.poor + lootProbabilities.nothing)
+            return Rarities.Legendary;
+        return Rarities.Nothing;
+    }
+
+    public static Equipment GenerateEquipment(LevelRange levelRange, LootProbabilities lootProbabilities)
+    {
+        SlotType slot = GenerateRandomSlotType();
+        Rarities rarity = GetRarityFromLootProbabilities(lootProbabilities);
+        GearMat gearMat = GetRandomGearMatFromSlot(slot);
+        int itemLevel = Random.Range(levelRange.min, levelRange.max + 1);
+
+        if (rarity == Rarities.Nothing)
+            return null;
+
+        if (slot == SlotType.OneHand || slot == SlotType.TwoHands)
+        {
+            float weaponSpeed = (float)Math.Round(Random.Range(0.5f, 2f), 2);
+            WeaponType weaponType = GenerateRandomWeaponType();
+            float damages = Mathf.Round((3f + itemLevel) * weaponSpeed * Mathf.Pow(1.005f, itemLevel) * StatsRatioBySlot(slot));
             if (weaponType == WeaponType.Shield)
                 damages *= .1f;
             return new Weapon(

@@ -10,7 +10,7 @@ public class Unit : Slotable, ICloneable
     public UnitClasses unitClass;
     public Unit target = null;
     public UnitGears gears = new();
-    public Weapon defaultWeapon = new("Fists", 1, SlotType.OneHand, null, Rarities.Common, new Stats(new Stat[0]), 1f, 1f, WeaponType.Mace);
+    public Weapon defaultWeapon = new("Fists", 1, SlotType.OneHand, null, Rarities.Common, new Stats(new Stat[0]), 3f, 1f, WeaponType.Mace);
     public override SlotType SlotType { get; set; }
     public override Sprite Icon { get; set; }
     public override string Color { get; set; }

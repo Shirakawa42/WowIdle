@@ -14,7 +14,7 @@ public class Enemy : Unit
         this.stats[StatIds.Level] = new Stat(level, StatIds.Level);
         Icon = Resources.Load<Sprite>("Textures/Enemies/" + icon);
 
-        int HpResources = level * 10;
+        int HpResources = level * 5;
         if (isBoss)
             HpResources *= 2;
 
