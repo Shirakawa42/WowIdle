@@ -79,7 +79,6 @@ public class DungeonManager : MonoBehaviour
     public void OnEnemyDeath(Enemy enemy)
     {
         ItemLoot(enemy);
-        activeEnemies.Remove(enemy);
         foreach (Unit hero in activeHeroes)
             hero.AddXP(enemy.droppedExp);
         enemy.Remove();

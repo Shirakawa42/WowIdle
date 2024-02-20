@@ -52,7 +52,7 @@ public class ItemTooltipManager : MonoBehaviour
         float canvasScale = Globals.gameCanvas.scaleFactor;
 
         if (position.x - background.rect.width * canvasScale < 0)
-            newPosition.x = 0;
+            newPosition.x = background.rect.width * canvasScale;
         if (position.y + background.rect.height * canvasScale > Screen.height)
             newPosition.y = Screen.height - background.rect.height * canvasScale;
 

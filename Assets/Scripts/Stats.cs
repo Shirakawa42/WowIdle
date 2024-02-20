@@ -31,6 +31,15 @@ public class Stats : ICloneable
         return Array.FindAll(stats, s => s.value != 0);
     }
 
+    public Stat[] GetClonedStats()
+    {
+        Stat[] usedStats = GetUsedStats();
+        Stat[] clonedStats = new Stat[usedStats.Length];
+        for (int i = 0; i < usedStats.Length; i++)
+            clonedStats[i] = (Stat)usedStats[i].Clone();
+        return clonedStats;
+    }
+
     public Stat this[StatIds index]
     {
         get => stats[(int)index];
@@ -51,7 +60,7 @@ public class Stats : ICloneable
 
     public object Clone()
     {
-        return new Stats(GetUsedStats());
+        return new Stats(GetClonedStats());
     }
 
 }

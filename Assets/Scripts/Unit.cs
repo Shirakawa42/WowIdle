@@ -54,6 +54,9 @@ public class Unit : Slotable, ICloneable
         if (CurrentSlot == null || CurrentSlot.equippedSlot == false)
             return;
 
+        if (CurrentSlot.GetSlotable() != this)
+            Debug.LogError("CurrentSlot.GetSlotable() != this");
+
         ProgressBar healthBar = CurrentSlot.extras.Find(x => x.gameObject.name == "HpBar").GetComponent<ProgressBar>();
         ProgressBar manaBar = CurrentSlot.extras.Find(x => x.gameObject.name == "ResourceBar").GetComponent<ProgressBar>();
 

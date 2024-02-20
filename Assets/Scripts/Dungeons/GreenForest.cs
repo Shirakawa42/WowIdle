@@ -6,9 +6,9 @@ public class GreenForest : Dungeon
 
     public override Dictionary<string, Enemy> EnemyTypes { get; } = new()
     {
-        { "Kobold", new("Kobold", false, "Kobold", 1, 5f, 2f, new Stat[0]) },
-        { "Adept", new("Adept Kobold", false, "Kobold", 3, 10f, 2f, new Stat[0]) },
-        { "Boss", new("Kobold Boss", true, "Kobold", 5, 15f, 2f, new Stat[0]) },
+        { "Kobold", new("Kobold", false, "Kobold", 1, 5f, 2f, new Stat[] {new(30, StatIds.HP), new(10, StatIds.Mana)}) },
+        { "Adept", new("Adept Kobold", false, "Kobold", 3, 10f, 2f, new Stat[] {new(50, StatIds.HP), new(20, StatIds.Mana)}) },
+        { "Boss", new("Kobold Boss", true, "Kobold", 5, 15f, 2f, new Stat[] {new(100, StatIds.HP), new(50, StatIds.Mana)}) },
     };
 
     public override List<Floor> Floors { get; } = new()

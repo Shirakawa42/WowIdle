@@ -273,7 +273,7 @@ public static class ItemUtils
 
         Stats stats = new();
 
-        stats[StatIds.Armor] += new Stat((float)Mathf.Round(ratio * armorRatio * ilvlRatio), StatIds.Armor);
+        stats[StatIds.Armor] += new Stat((float)Mathf.Round(ratio * armorRatio * ilvlRatio * 8f), StatIds.Armor);
         for (int i = 0; i < StatsLoopCountByRarity(rarity); i++)
         {
             StatIds randomStat = possibleStats[Random.Range(0, possibleStats.Length)];

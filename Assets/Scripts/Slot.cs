@@ -15,23 +15,36 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
     public int id;
     public GameObject selectedBorder;
     public TMP_Text levelText = null;
+    public GameObject[] disabledOnEnemy = new GameObject[0];
 
     private Slotable slotable = null;
+
+
+    void Start()
+    {
+        if (slotType == SlotType.Enemy)
+        {
+            foreach (GameObject obj in disabledOnEnemy)
+                obj.SetActive(false);
+        }
+    }
 
     public Slotable SetSlotable(Slotable newslotable, bool dontEquip = false)
     {
         Slotable oldSlotable = slotable;
+        if (newslotable == null)
+        {
+            EmptySlot();
+            return oldSlotable;
+        }
 
-        newslotable?.SetCurrentSlot(this);
+        newslotable.SetCurrentSlot(this);
+        EnableExtras(equippedSlot);
 
-        if (equippedSlot && newslotable != null)
-            EnableExtras(true);
-        else
-            EnableExtras(false);
-
-        if (equippedSlot && !dontEquip)
-            newslotable?.OnEquip();
         slotable = newslotable;
+        if (equippedSlot && !dontEquip)
+            newslotable.OnEquip();
+
         draggableItem.SetActive(false);
         if (newslotable != null)
         {
@@ -49,7 +62,9 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
     {
         if (equippedSlot)
             slotable?.OnUnequip();
-        SetSlotable(null);
+        slotable = null;
+        draggableItem.SetActive(false);
+        EnableExtras(false);
     }
 
     public Vector2 GetTopLeftCorner()
@@ -106,7 +121,7 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
             return;
         if (Globals.selectedSlot != null)
             Globals.selectedSlot.selectedBorder.SetActive(false);
-        
+
         Globals.selectedSlot = this;
         selectedBorder.SetActive(true);
     }
@@ -119,7 +134,8 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
         if (droppedSlot.slotable == null || !IsSlotCompatible(droppedSlot.slotable.SlotType))
             return;
 
-        if (Globals.selectedSlot == droppedSlot) {
+        if (Globals.selectedSlot == droppedSlot)
+        {
             SetSelected();
         }
 

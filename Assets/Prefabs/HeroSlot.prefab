@@ -2086,6 +2086,9 @@ MonoBehaviour:
   id: 0
   selectedBorder: {fileID: 7027277102275519437}
   levelText: {fileID: 1270605706025755052}
+  disabledOnEnemy:
+  - {fileID: 1335496146052165810}
+  - {fileID: 2519258287106969239}
 --- !u!222 &4023021249745575666
 CanvasRenderer:
   m_ObjectHideFlags: 0

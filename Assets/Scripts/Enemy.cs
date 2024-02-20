@@ -10,18 +10,9 @@ public class Enemy : Unit
     public Enemy(string name, bool isBoss, string icon, int level, float weaponDamages, float weaponSpeed, Stat[] stats) : base(name, UnitClasses.Enemy)
     {
         this.isBoss = isBoss;
-        this.stats.AddStats(stats);
-        this.stats[StatIds.Level] = new Stat(level, StatIds.Level);
+        this.stats = new Stats(stats);
+        this.Level = level;
         Icon = Resources.Load<Sprite>("Textures/Enemies/" + icon);
-
-        int HpResources = level * 5;
-        if (isBoss)
-            HpResources *= 2;
-
-        this.stats[StatIds.HP].value += HpResources;
-        this.stats[StatIds.CurrentHP].value += HpResources;
-        this.stats[StatIds.Mana].value += HpResources;
-        this.stats[StatIds.CurrentMana].value += HpResources; 
 
         droppedMoney = Level + Random.Range(1, 3);
         droppedExp = Level * 2;
@@ -31,6 +22,7 @@ public class Enemy : Unit
             droppedExp *= 3;
         }
         defaultWeapon = new("Fists", 1, SlotType.OneHand, null, Rarities.Common, new Stats(new Stat[0]), weaponDamages, weaponSpeed, WeaponType.Mace);
+        RegenUnit();
     }
 
     public override void Tick()
@@ -45,13 +37,25 @@ public class Enemy : Unit
         Globals.dungeonManager.OnEnemyDeath(this);
     }
 
+    public override void OnEquip()
+    {
+        RegenUnit();
+        base.OnEquip();
+    }
+
+    public override void OnUnequip()
+    {
+        Globals.dungeonManager.activeEnemies.Remove(this);
+    }
+
     public void Remove()
     {
         CurrentSlot.EmptySlot();
+        CurrentSlot = null;
     }
 
     public override object Clone()
     {
-        return new Enemy(unitName, isBoss, Icon.name, Level, defaultWeapon.damages, defaultWeapon.cooldown, stats.GetUsedStats());
+        return new Enemy(unitName, isBoss, Icon.name, Level, defaultWeapon.damages, defaultWeapon.cooldown, stats.GetClonedStats());
     }
 }   

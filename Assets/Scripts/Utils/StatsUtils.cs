@@ -5,8 +5,8 @@ using System.Linq;
 public static class StatsUtils
 {
     public const int maxLevel = 60;
-    public const int baseHP = 10;
-    public const int baseMana = 10;
+    public const int baseHP = 100;
+    public const int baseMana = 50;
 
     public static string GetStatNameFromStatId(StatIds id)
     {
@@ -139,7 +139,7 @@ public static class StatsUtils
     }
 }
 
-public class Stat
+public class Stat : ICloneable
 {
     public string name;
     public float value;
@@ -168,5 +168,10 @@ public class Stat
             throw new Exception("You can't subtract two stats with different names");
 
         return new Stat(a.value - b.value, a.id);
+    }
+
+    public object Clone()
+    {
+        return new Stat(value, id);
     }
 }

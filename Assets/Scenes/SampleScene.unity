@@ -537,6 +537,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1456504855}
     m_Modifications:
+    - target: {fileID: 2222179250962199534, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222179250962199534, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5242383167051309928, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -629,6 +637,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: HeroSlot (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7526356728060631720, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526356728060631720, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -650,6 +666,14 @@ PrefabInstance:
     - target: {fileID: 1089258366076977527, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
       propertyPath: slotType
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222179250962199534, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222179250962199534, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5242383167051309928, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
       propertyPath: m_Pivot.x
@@ -743,6 +767,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemySlot (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7526356728060631720, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526356728060631720, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -761,6 +793,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1456504855}
     m_Modifications:
+    - target: {fileID: 2222179250962199534, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222179250962199534, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5242383167051309928, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -852,6 +892,14 @@ PrefabInstance:
     - target: {fileID: 7133610728971173436, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
       propertyPath: m_Name
       value: HeroSlot (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526356728060631720, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526356728060631720, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1543,6 +1591,14 @@ PrefabInstance:
       propertyPath: equippedSlot
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2222179250962199534, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222179250962199534, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5242383167051309928, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1634,6 +1690,14 @@ PrefabInstance:
     - target: {fileID: 7133610728971173436, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
       propertyPath: m_Name
       value: HeroSlot
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526356728060631720, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526356728060631720, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3240,6 +3304,14 @@ PrefabInstance:
       propertyPath: slotType
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 2222179250962199534, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222179250962199534, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5242383167051309928, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3331,6 +3403,14 @@ PrefabInstance:
     - target: {fileID: 7133610728971173436, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
       propertyPath: m_Name
       value: EnemySlot (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526356728060631720, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526356728060631720, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4162,6 +4242,14 @@ PrefabInstance:
       propertyPath: equippedSlot
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2222179250962199534, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222179250962199534, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5242383167051309928, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4253,6 +4341,14 @@ PrefabInstance:
     - target: {fileID: 7133610728971173436, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
       propertyPath: m_Name
       value: HeroSlot (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526356728060631720, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526356728060631720, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5500,6 +5596,18 @@ PrefabInstance:
       propertyPath: slotType
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 1553244570668866248, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222179250962199534, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222179250962199534, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5242383167051309928, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -5591,6 +5699,14 @@ PrefabInstance:
     - target: {fileID: 7133610728971173436, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
       propertyPath: m_Name
       value: EnemySlot
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526356728060631720, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526356728060631720, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6430,6 +6546,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1456504855}
     m_Modifications:
+    - target: {fileID: 2222179250962199534, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222179250962199534, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5242383167051309928, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -6521,6 +6645,14 @@ PrefabInstance:
     - target: {fileID: 7133610728971173436, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
       propertyPath: m_Name
       value: HeroSlot
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526356728060631720, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526356728060631720, guid: ceb297e7bf71e9948acb6b6b9baac210, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
