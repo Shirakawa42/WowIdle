@@ -8,7 +8,7 @@ public static class Globals
     public const int maxLevel = 60;
     public const float timeBetweenFloors = tickRate * 15f;
 
-    public static Unit selectedHero = null;
+    public static Hero selectedHero = null;
     public static Slot selectedSlot = null;
     public static Canvas gameCanvas = null;
     public static GameManager gameManager = null;

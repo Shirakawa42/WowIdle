@@ -9,5 +9,4 @@ public enum UnitClasses
     Paladin,
     Shaman,
     Druid,
-    Enemy
 }

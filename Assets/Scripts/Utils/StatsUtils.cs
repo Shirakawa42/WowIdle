@@ -79,9 +79,7 @@ public static class StatsUtils
 
         List<Stat> classStats = new();
 
-        if (unitclass == UnitClasses.Enemy)
-            return everyone.ToArray();
-        else if (unitclass == UnitClasses.Mage)
+        if (unitclass == UnitClasses.Mage)
             classStats = new()
             {
                 new(4, StatIds.Intelligence),

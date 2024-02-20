@@ -15,7 +15,7 @@ public class DungeonManager : MonoBehaviour
     private Dungeon currentDungeon;
     private int currentFloor = 0;
     private int maxFloor;
-    private Queue<Enemy> enemiesToSpawn = new();
+    private readonly Queue<Enemy> enemiesToSpawn = new();
     private float floorCooldown = Globals.timeBetweenFloors;
 
     void Awake()
@@ -79,7 +79,7 @@ public class DungeonManager : MonoBehaviour
     public void OnEnemyDeath(Enemy enemy)
     {
         ItemLoot(enemy);
-        foreach (Unit hero in activeHeroes)
+        foreach (Hero hero in activeHeroes)
             hero.AddXP(enemy.droppedExp);
         enemy.Remove();
         if (enemiesToSpawn.Count > 0)

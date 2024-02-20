@@ -7,7 +7,6 @@ public class ColorUtils
         //shaman color is #0070DE
         return unitClass switch
         {
-            UnitClasses.Enemy => "#FF0000",
             UnitClasses.Shaman => "#0070DE",
             UnitClasses.Rogue => "#FFF569",
             UnitClasses.Mage => "#69CCF0",

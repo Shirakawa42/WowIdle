@@ -20,7 +20,7 @@ public class StatsPanelManager : MonoBehaviour
         if (unit == null)
             return;
 
-        Stat[] stats = unit.stats.GetUsedStats();
+        Stat[] stats = unit.Stats.GetUsedStats();
 
         string text = "<align=left>";
         foreach (Stat stat in stats)

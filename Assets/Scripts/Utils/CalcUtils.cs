@@ -2,7 +2,7 @@ using UnityEngine;
 
 public static class CalcUtils
 {
-    public static float CalculateWeaponDamage(Weapon weapon, Unit unit, bool mainHand)
+    public static float CalculateWeaponDamage(Weapon weapon, Hero unit, bool mainHand)
     {
         if (weapon == null)
             return 0;
@@ -19,8 +19,8 @@ public static class CalcUtils
         }
 
         if (mainHand)
-            return Mathf.RoundToInt((weapon.damages + weapon.damages * (unit.stats[StatIds.Strength].value / 10)) * damageMultiplier);
+            return Mathf.RoundToInt((weapon.damages + weapon.damages * (unit.Stats[StatIds.Strength].value / 10)) * damageMultiplier);
         else
-            return Mathf.RoundToInt((weapon.damages + weapon.damages * (unit.stats[StatIds.Strength].value / 10)) * offHandMultiplier * damageMultiplier);
+            return Mathf.RoundToInt((weapon.damages + weapon.damages * (unit.Stats[StatIds.Strength].value / 10)) * offHandMultiplier * damageMultiplier);
     }
 }

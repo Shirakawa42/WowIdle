@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
 
     public void AddHeroToInventory()
     {
-        Globals.heroesInventoryManager.AddHero(new Unit(
+        Globals.heroesInventoryManager.AddHero(new Hero(
             "Shirah",
             UnitClasses.Shaman
         ));

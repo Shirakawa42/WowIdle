@@ -7,7 +7,7 @@ public class Equipment : Slotable, ICloneable
     public string equipmentName;
     public Stats stats;
     public Rarities rarity;
-    public Unit equippedUnit;
+    public Hero equippedUnit;
     public GearMat gearMat;
 
     public override SlotType SlotType { get; set; }
@@ -49,7 +49,7 @@ public class Equipment : Slotable, ICloneable
         if (equippedUnit != null) return;
         equippedUnit = Globals.selectedHero;
         equippedUnit.gears.Equip(CurrentSlot.id, this);
-        equippedUnit.stats.AddStats(stats.GetUsedStats());
+        equippedUnit.Stats.AddStats(stats.GetUsedStats());
         equippedUnit.RecalculateUnitStats();
         Globals.statsPanelManager.UpdateStats(equippedUnit);
     }
@@ -57,7 +57,7 @@ public class Equipment : Slotable, ICloneable
     public override void OnUnequip()
     {
         if (equippedUnit == null) return;
-        equippedUnit.stats.RemoveStats(stats.GetUsedStats());
+        equippedUnit.Stats.RemoveStats(stats.GetUsedStats());
         equippedUnit.gears.Unequip(CurrentSlot.id);
         equippedUnit.RecalculateUnitStats();
         Globals.statsPanelManager.UpdateStats(equippedUnit);
