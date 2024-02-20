@@ -18,6 +18,7 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
     public GameObject[] disabledOnEnemy = new GameObject[0];
 
     private Slotable slotable = null;
+    private bool dragging = false;
 
 
     void Start()
@@ -54,13 +55,14 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
             draggableItem.SetActive(true);
             foreach (Image image in coloredImages)
                 image.color = ColorUtils.GetColorFromHex(newslotable.Color);
+            slotable.UpdateBars();
         }
         return oldSlotable;
     }
 
-    public void EmptySlot()
+    public void EmptySlot(bool dontUnequip = false)
     {
-        if (equippedSlot)
+        if (equippedSlot && !dontUnequip)
             slotable?.OnUnequip();
         slotable = null;
         draggableItem.SetActive(false);
@@ -100,6 +102,7 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        dragging = true;
         if (slotable != null && slotType != SlotType.Enemy)
         {
             draggableItem.transform.SetParent(transform.root);
@@ -131,7 +134,7 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
         GameObject droppedItem = eventData.pointerDrag;
         Slot droppedSlot = droppedItem.GetComponent<Slot>();
 
-        if (droppedSlot.slotable == null || !IsSlotCompatible(droppedSlot.slotable.SlotType))
+        if (droppedSlot.slotable == null || !IsSlotCompatible(droppedSlot.slotable.SlotType) || droppedSlot == this)
             return;
 
         if (Globals.selectedSlot == droppedSlot)
@@ -142,17 +145,23 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
         Slotable newSlotable = droppedSlot.slotable;
         Slotable oldSlotable = slotable;
 
-        droppedSlot.EmptySlot();
-        EmptySlot();
+        bool dontUnequip = false;
+        bool dontEquip = false;
+        if (equippedSlot && droppedSlot.equippedSlot)
+            dontUnequip = dontEquip = true;
 
-        droppedSlot.SetSlotable(oldSlotable);
-        SetSlotable(newSlotable);
+        droppedSlot.EmptySlot(dontUnequip);
+        EmptySlot(dontUnequip);
+
+        droppedSlot.SetSlotable(oldSlotable, dontEquip);
+        SetSlotable(newSlotable, dontEquip);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         draggableItem.transform.position = transform.position;
         draggableItem.transform.SetParent(transform);
+        dragging = false;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -211,5 +220,36 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
     public bool IsUnitSlot(SlotType slotType)
     {
         return slotType == SlotType.Hero || slotType == SlotType.Enemy;
+    }
+
+    public void PlayAttackAnimation(Vector3 targetPosition)
+    {
+        if (!dragging)
+            StartCoroutine(MoveTo(targetPosition));
+    }
+
+    private System.Collections.IEnumerator MoveTo(Vector3 targetPosition)
+    {
+        float time = 0;
+        Vector3 startPosition = draggableItem.transform.position;
+        targetPosition = startPosition + (targetPosition - startPosition).normalized * 10f;
+        while (time < 0.2f)
+        {
+            if (dragging)
+                break;
+            time += Time.deltaTime;
+            draggableItem.transform.position = Vector3.Lerp(startPosition, targetPosition, time / 0.1f);
+            yield return null;
+        }
+        time = 0;
+        while (time < 0.2f)
+        {
+            if (dragging)
+                break;
+            time += Time.deltaTime;
+            draggableItem.transform.position = Vector3.Lerp(targetPosition, startPosition, time / 0.1f);
+            yield return null;
+        }
+        draggableItem.transform.position = transform.position;
     }
 }

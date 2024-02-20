@@ -14,4 +14,5 @@ public abstract class Slotable
     public abstract void OnPointerExit();
     public abstract void SetCurrentSlot(Slot slot);
     public virtual void OnClick() { }
+    public virtual void UpdateBars() { }
 }

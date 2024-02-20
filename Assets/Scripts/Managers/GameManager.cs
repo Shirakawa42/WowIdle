@@ -28,6 +28,10 @@ public class GameManager : MonoBehaviour
             "Shirah",
             UnitClasses.Shaman
         ));
+        Globals.heroesInventoryManager.AddHero(new Hero(
+            "Jojo",
+            UnitClasses.Shaman
+        ));
     }
 
     void Update() {

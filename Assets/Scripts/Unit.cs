@@ -20,7 +20,7 @@ public abstract class Unit : Slotable, ICloneable
 
     public abstract void Tick();
 
-    public virtual void UpdateBars()
+    public override void UpdateBars()
     {
         if (CurrentSlot == null || CurrentSlot.equippedSlot == false)
             return;

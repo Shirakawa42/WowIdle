@@ -27,8 +27,11 @@ public class Weapon : Equipment
             currentCooldown -= Globals.tickRate;
         else
         {
-            AutoAttack(target);
             currentCooldown += cooldown;
+            if (target == null)
+                return;
+            self.CurrentSlot.PlayAttackAnimation(target.CurrentSlot.transform.position);
+            AutoAttack(target);
         }
     }
 
