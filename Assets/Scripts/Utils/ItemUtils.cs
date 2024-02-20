@@ -264,16 +264,31 @@ public static class ItemUtils
         };
     }
 
+    private static float ArmorRatioByQuality(Rarities rarity)
+    {
+        return rarity switch
+        {
+            Rarities.Poor => .75f,
+            Rarities.Common => 1f,
+            Rarities.Uncommon => 1.25f,
+            Rarities.Rare => 1.5f,
+            Rarities.Epic => 1.75f,
+            Rarities.Legendary => 2f,
+            _ => .75f,
+        };
+    }
+
     public static Stats GenerateStatsForEquipment(int level, SlotType slot, Rarities rarity, GearMat mat, WeaponType weaponType = WeaponType.None)
     {
         StatIds[] possibleStats = PossiblesStatsBySlot(slot, weaponType);
         float ratio = StatsRatioBySlot(slot);
         float armorRatio = ArmorRatioByGearMat(mat);
+        float armorQualityRatio = ArmorRatioByQuality(rarity);
         float ilvlRatio = level * Mathf.Pow(1.005f, level);
 
         Stats stats = new();
 
-        stats[StatIds.Armor] += new Stat((float)Mathf.Round(ratio * armorRatio * ilvlRatio * 8f), StatIds.Armor);
+        stats[StatIds.Armor] += new Stat((float)Mathf.Round(ratio * armorRatio * ilvlRatio * armorQualityRatio * 8f), StatIds.Armor);
         for (int i = 0; i < StatsLoopCountByRarity(rarity); i++)
         {
             StatIds randomStat = possibleStats[Random.Range(0, possibleStats.Length)];
