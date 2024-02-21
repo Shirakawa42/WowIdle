@@ -14,6 +14,15 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         AddHeroToInventory();
+        Globals.inventoryManager.AddItem(new Equipment(
+            "GODLY GIFT",
+            500,
+            SlotType.Trinket,
+            null,
+            Rarities.Legendary,
+            new Stats(new Stat[] { new(500, StatIds.Armor) }),
+            GearMat.Plate
+        ));
     }
 
     public void AddItemToInventory()
@@ -24,7 +33,7 @@ public class GameManager : MonoBehaviour
 
     public void AddHeroToInventory()
     {
-        Hero shirah = new Hero(
+        Hero shirah = new(
             "Shirah",
             UnitClasses.Shaman
         );

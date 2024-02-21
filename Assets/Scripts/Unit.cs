@@ -61,9 +61,16 @@ public abstract class Unit : Slotable, ICloneable
         UpdateBars();
     }
 
-    public void TakeDamage(float damage, DamageType damageType)
+    public void TakeDamage(float damage, DamageType damageType, Stats casterStats)
     {
-        Globals.floatingDamagesManager.CreateFloatingDamage(CurrentSlot.transform.position, (int)damage, FloatingDamageType.AutoDamage, false);
+        if (damageType == DamageType.Physical)
+        {
+            float armor = Mathf.Max(Stats[StatIds.Armor].value - casterStats[StatIds.ArmorPenetration].value, 0f);
+            float armorReduction = CalcUtils.GetArmorReduction(armor, casterStats[StatIds.Level].value);
+            damage *= 1f - (armorReduction / 100f);
+        }
+
+        Globals.floatingDamagesManager.CreateFloatingDamage(CurrentSlot.transform.position, Mathf.RoundToInt(damage), FloatingDamageType.AutoDamage, false);
         Stats[StatIds.CurrentHP].value -= damage;
         if (Stats[StatIds.CurrentHP].value <= 0)
             Die();

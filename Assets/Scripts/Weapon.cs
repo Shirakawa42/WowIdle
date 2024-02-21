@@ -16,9 +16,9 @@ public class Weapon : Equipment
         this.weaponType = weaponType;
     }
 
-    public void AutoAttack(Unit target)
+    public void AutoAttack(Unit target, Unit self)
     {
-        target?.TakeDamage(damages, DamageType.Physical);
+        target?.TakeDamage(damages, DamageType.Physical, self.Stats);
     }
 
     public void Tick(Unit target, Unit self)
@@ -31,7 +31,7 @@ public class Weapon : Equipment
             if (target == null)
                 return;
             self.CurrentSlot.PlayAttackAnimation(target.CurrentSlot.transform.position);
-            AutoAttack(target);
+            AutoAttack(target, self);
         }
     }
 
