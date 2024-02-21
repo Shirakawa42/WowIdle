@@ -56,6 +56,10 @@ public static class StatsUtils
                 return "Parry Chances";
             case StatIds.BlockChances:
                 return "Block Chances";
+            case StatIds.TotalPhysicalReduction:
+                return "Physical Reduction";
+            case StatIds.ArmorPenetration:
+                return "Armor Penetration";
             default:
                 throw new Exception("UNKNOWN");
         }
@@ -132,6 +136,8 @@ public static class StatsUtils
             StatIds.DodgeChances => ValueType.SecondaryStatPercent,
             StatIds.ParryChances => ValueType.SecondaryStatPercent,
             StatIds.BlockChances => ValueType.SecondaryStatPercent,
+            StatIds.TotalPhysicalReduction => ValueType.SecondaryStatPercent,
+            StatIds.ArmorPenetration => ValueType.SecondaryStat,
             _ => ValueType.Invisible,
         };
     }

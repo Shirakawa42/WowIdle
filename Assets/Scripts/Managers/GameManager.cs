@@ -18,16 +18,17 @@ public class GameManager : MonoBehaviour
 
     public void AddItemToInventory()
     {
-        Equipment equipment = ItemUtils.GenerateEquipmentOPTOREMOVE(Random.Range(1, 20));
+        Equipment equipment = ItemUtils.GenerateEquipmentOPTOREMOVE(Random.Range(1, 10));
         Globals.inventoryManager.AddItem(equipment);
     }
 
     public void AddHeroToInventory()
     {
-        Globals.heroesInventoryManager.AddHero(new Hero(
+        Hero shirah = new Hero(
             "Shirah",
             UnitClasses.Shaman
-        ));
+        );
+        Globals.heroesInventoryManager.AddHero(shirah);
         Globals.heroesInventoryManager.AddHero(new Hero(
             "Jojo",
             UnitClasses.Shaman

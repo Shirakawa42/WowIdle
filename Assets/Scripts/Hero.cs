@@ -54,10 +54,9 @@ public class Hero : Unit
         experienceBar.UpdateValues(XpUtils.GetRequiredXp(Level), (int)Stats[StatIds.Experience].value, "#FF00CC");
     }
 
-    public void RecalculateUnitStats()
+    public override void RecalculateUnitStats()
     {
-        Stats[StatIds.HP].value = StatsUtils.baseHP + Stats[StatIds.Stamina].value * 10;
-        Stats[StatIds.Mana].value = StatsUtils.baseMana + Stats[StatIds.Intelligence].value * 10;
+        Stats.Recalculate();
 
         if (gears.GetMainHandWeapon() == null && gears.GetOffHandWeapon() == null)
         {
@@ -100,7 +99,7 @@ public class Hero : Unit
 
     public void CheckLevelUp()
     {
-        while (Stats[StatIds.Experience].value >= XpUtils.GetRequiredXp(Level))
+        while (Level < Globals.maxLevel && Stats[StatIds.Experience].value >= XpUtils.GetRequiredXp(Level))
         {
             Stats[StatIds.Experience].value -= XpUtils.GetRequiredXp(Level);
             LevelUp();

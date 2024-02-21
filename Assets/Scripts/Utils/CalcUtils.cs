@@ -23,4 +23,9 @@ public static class CalcUtils
         else
             return Mathf.RoundToInt((weapon.damages + weapon.damages * (unit.Stats[StatIds.Strength].value / 10)) * offHandMultiplier * damageMultiplier);
     }
+
+    public static float GetArmorReduction(float armor, float level)
+    {
+        return armor / (armor + (240f*(level * Mathf.Pow(Globals.globalExponentialGrowth, level*2f)))) * 100f;
+    }
 }

@@ -78,4 +78,6 @@ public abstract class Unit : Slotable, ICloneable
     }
 
     public abstract object Clone();
+
+    public abstract void RecalculateUnitStats();
 }

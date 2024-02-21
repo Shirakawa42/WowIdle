@@ -1,5 +1,6 @@
 public enum StatIds
 {
+    // Base
     HP,
     CurrentHP,
     Mana,
@@ -7,19 +8,29 @@ public enum StatIds
     Level,
     maxLevel,
     Experience,
+
+    // Main Stats
     Strength,
     Agility,
     Intelligence,
     Stamina,
     Armor,
-    MainHandDamage,
-    MainHandSpeed,
-    OffHandDamage,
-    OffHandSpeed,
+
+    // Secondary Stats
     CritChances,
     CritDamage,
     HitChances,
     DodgeChances,
     ParryChances,
     BlockChances,
+    ArmorPenetration,
+
+    // Weapons
+    MainHandDamage,
+    MainHandSpeed,
+    OffHandDamage,
+    OffHandSpeed,
+
+    // Multipliers
+    TotalPhysicalReduction,
 }

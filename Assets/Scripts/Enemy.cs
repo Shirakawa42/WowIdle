@@ -88,4 +88,9 @@ public class Enemy : Unit
     {
         Globals.itemTooltipManager.HideTooltip();
     }
+
+    public override void RecalculateUnitStats()
+    {
+        //TODO
+    }
 }

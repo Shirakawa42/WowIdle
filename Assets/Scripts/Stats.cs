@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class Stats : ICloneable
 {
@@ -56,6 +57,13 @@ public class Stats : ICloneable
     {
         foreach (Stat stat in stats)
             this[stat.id] -= stat;
+    }
+
+    public void Recalculate()
+    {
+        this[StatIds.HP].value = StatsUtils.baseHP + this[StatIds.Stamina].value * 10;
+        this[StatIds.Mana].value = StatsUtils.baseMana + this[StatIds.Intelligence].value * 5;
+        this[StatIds.TotalPhysicalReduction].value = CalcUtils.GetArmorReduction(this[StatIds.Armor].value, this[StatIds.Level].value);
     }
 
     public object Clone()

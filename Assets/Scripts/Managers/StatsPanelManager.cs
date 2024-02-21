@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -32,7 +33,10 @@ public class StatsPanelManager : MonoBehaviour
         text = "<align=right>";
         foreach (Stat stat in stats)
             if (stat.type != ValueType.Invisible)
-                text += $"<color={ColorUtils.GetColorFromValueType(stat.type)}>{stat.value}{(stat.type == ValueType.SecondaryStatPercent ? "%" : "")}</color>\n";
+            {
+                bool isPercent = stat.type == ValueType.SecondaryStatPercent;
+                text += $"<color={ColorUtils.GetColorFromValueType(stat.type)}>{Math.Round(stat.value, 1)}{(isPercent ? "%" : "")}</color>\n";
+            }
         text += "</align>";
         statsValues.SetText(text);
     }

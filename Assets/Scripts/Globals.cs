@@ -7,6 +7,7 @@ public static class Globals
     public const float tickRate = 1f/15f;
     public const int maxLevel = 60;
     public const float timeBetweenFloors = tickRate * 15f;
+    public const float globalExponentialGrowth = 1.005f;
 
     public static Hero selectedHero = null;
     public static Slot selectedSlot = null;
