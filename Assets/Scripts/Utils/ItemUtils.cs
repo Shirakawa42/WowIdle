@@ -172,7 +172,7 @@ public static class ItemUtils
             GearMat.Leather => .86f,
             GearMat.Mail => 1.26f,
             GearMat.Plate => 1.9f,
-            GearMat.Shield => 3f,
+            GearMat.Shield => 4f,
             _ => 0f,
         };
     }
@@ -204,11 +204,11 @@ public static class ItemUtils
         return rarity switch
         {
             Rarities.Poor => 1,
-            Rarities.Common => 1,
-            Rarities.Uncommon => 3,
-            Rarities.Rare => 5,
-            Rarities.Epic => 7,
-            Rarities.Legendary => 10,
+            Rarities.Common => 2,
+            Rarities.Uncommon => 4,
+            Rarities.Rare => 6,
+            Rarities.Epic => 9,
+            Rarities.Legendary => 14,
             _ => 1,
         };
     }
@@ -254,9 +254,8 @@ public static class ItemUtils
             StatIds.Agility => baseMultiplier,
             StatIds.Intelligence => baseMultiplier,
             StatIds.Stamina => baseMultiplier * 1.5f,
-            StatIds.Armor => baseMultiplier * 2f,
             StatIds.CritChances => 1f + (baseMultiplier / 100f),
-            StatIds.CritDamage => 4f + (baseMultiplier / 40f),
+            StatIds.CritDamage => 3f + (baseMultiplier / 40f),
             StatIds.HitChances => 1f + (baseMultiplier / 100f),
             StatIds.DodgeChances => 1f + (baseMultiplier / 100f),
             StatIds.ParryChances => 1f + (baseMultiplier / 25f),
@@ -276,7 +275,7 @@ public static class ItemUtils
             Rarities.Rare => 1.5f,
             Rarities.Epic => 1.75f,
             Rarities.Legendary => 2f,
-            _ => .75f,
+            _ => .5f,
         };
     }
 
@@ -303,7 +302,7 @@ public static class ItemUtils
         SlotType.Boots,
         SlotType.Gloves,
         SlotType.Belt,
-        SlotType.Bracers
+        SlotType.Bracers,
     };
 
     public static Stats GenerateStatsForEquipment(int level, SlotType slot, Rarities rarity, GearMat mat, WeaponType weaponType = WeaponType.None)
@@ -316,7 +315,7 @@ public static class ItemUtils
 
         Stats stats = new();
 
-        if (ArmorSlots.Contains(slot))
+        if (ArmorSlots.Contains(slot) || weaponType == WeaponType.Shield)
             stats[StatIds.Armor] += new Stat((float)Mathf.Round(ratio * armorRatio * ilvlRatio * armorQualityRatio * 8f), StatIds.Armor);
         for (int i = 0; i < StatsLoopCountByRarity(rarity); i++)
         {

@@ -147,7 +147,7 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
 
         bool dontUnequip = false;
         bool dontEquip = false;
-        if (equippedSlot && droppedSlot.equippedSlot)
+        if (equippedSlot && droppedSlot.equippedSlot && slotType == SlotType.Hero)
             dontUnequip = dontEquip = true;
 
         droppedSlot.EmptySlot(dontUnequip);
