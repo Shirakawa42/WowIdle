@@ -61,8 +61,8 @@ public class Stats : ICloneable
 
     public void Recalculate()
     {
-        this[StatIds.HP].value = StatsUtils.baseHP + this[StatIds.Stamina].value * 10;
-        this[StatIds.Mana].value = StatsUtils.baseMana + this[StatIds.Intelligence].value * 5;
+        this[StatIds.HP].value = StatsUtils.baseHP + this[StatIds.Stamina].value * Globals.HpPerStamina;
+        this[StatIds.Mana].value = StatsUtils.baseMana + this[StatIds.Intelligence].value * Globals.ManaPerIntelligence;
         this[StatIds.TotalPhysicalReduction].value = CalcUtils.GetArmorReduction(this[StatIds.Armor].value, this[StatIds.Level].value);
     }
 

@@ -203,11 +203,12 @@ public static class ItemUtils
     {
         return rarity switch
         {
-            Rarities.Common => 2,
-            Rarities.Uncommon => 4,
-            Rarities.Rare => 7,
-            Rarities.Epic => 11,
-            Rarities.Legendary => 16,
+            Rarities.Poor => 1,
+            Rarities.Common => 1,
+            Rarities.Uncommon => 3,
+            Rarities.Rare => 5,
+            Rarities.Epic => 7,
+            Rarities.Legendary => 10,
             _ => 1,
         };
     }

@@ -60,10 +60,11 @@ public class Hero : Unit
 
         if (gears.GetMainHandWeapon() == null && gears.GetOffHandWeapon() == null)
         {
-            Stats[StatIds.MainHandDamage].value = DefaultWeapon.damages;
+            Stats[StatIds.MainHandDamage].value = CalcUtils.CalculateWeaponDamage(DefaultWeapon, this, true);
             Stats[StatIds.MainHandSpeed].value = DefaultWeapon.cooldown;
             Stats[StatIds.OffHandDamage].value = 0;
             Stats[StatIds.OffHandSpeed].value = 0;
+            DefaultWeapon.SetCalculatedDamages(Stats[StatIds.MainHandDamage].value);
         }
         else
         {
@@ -71,6 +72,8 @@ public class Hero : Unit
             Stats[StatIds.MainHandSpeed].value = gears.GetMainHandWeapon()?.cooldown ?? 0;
             Stats[StatIds.OffHandDamage].value = CalcUtils.CalculateWeaponDamage(gears.GetOffHandWeapon(), this, false);
             Stats[StatIds.OffHandSpeed].value = gears.GetOffHandWeapon()?.cooldown ?? 0;
+            gears.GetMainHandWeapon()?.SetCalculatedDamages(Stats[StatIds.MainHandDamage].value);
+            gears.GetOffHandWeapon()?.SetCalculatedDamages(Stats[StatIds.OffHandDamage].value);
         }
         UpdateBars();
     }

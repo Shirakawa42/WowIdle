@@ -23,6 +23,8 @@ public class FloatingDamage : MonoBehaviour
     public void Play(FloatingDamageType type, bool isCrit, int value, Vector3 position)
     {
         text.text = value.ToString();
+        if (type == FloatingDamageType.Miss)
+            text.text = "Miss";
         text.color = GetColorFromType(type);
         transform.position = position + new Vector3(Random.Range(-25f, 25f), Random.Range(-25f, 25f), 0);
 

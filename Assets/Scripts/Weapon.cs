@@ -7,6 +7,7 @@ public class Weapon : Equipment
     public float damages;
     public float cooldown;
     public WeaponType weaponType;
+    private float calculatedDamages;
 
     public Weapon(string name, int itemLevel, SlotType slot, Sprite icon, Rarities rarity, Stats stats, float damages, float cooldown, WeaponType weaponType) : base(name, itemLevel, slot, icon, rarity, stats)
     {
@@ -18,7 +19,12 @@ public class Weapon : Equipment
 
     public void AutoAttack(Unit target, Unit self)
     {
-        target?.TakeDamage(damages, DamageType.Physical, self.Stats);
+        target?.TakeDamage(calculatedDamages, DamageType.Physical, self.Stats);
+    }
+
+    public void SetCalculatedDamages(float damages)
+    {
+        calculatedDamages = damages;
     }
 
     public void Tick(Unit target, Unit self)

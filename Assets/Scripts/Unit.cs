@@ -63,6 +63,25 @@ public abstract class Unit : Slotable, ICloneable
 
     public void TakeDamage(float damage, DamageType damageType, Stats casterStats)
     {
+        int casterLevel = (int)casterStats[StatIds.Level].value;
+        int level = (int)Stats[StatIds.Level].value;
+
+        //loose 5% crit chance per level difference
+        float critChance = casterStats[StatIds.CritChances].value - (level - casterLevel) * 5f;
+        //loose 5% hit chance per level difference
+        float hitChance = casterStats[StatIds.HitChances].value - (level - casterLevel) * 5f;
+
+        bool isCrit = Random.Range(0f, 100f) < critChance;
+        bool isHit = Random.Range(0f, 100f) < hitChance;
+
+        if (!isHit)
+        {
+            Globals.floatingDamagesManager.CreateFloatingDamage(CurrentSlot.transform.position, 0, FloatingDamageType.Miss, false);
+            return;
+        }
+        if (isCrit)
+            damage *= casterStats[StatIds.CritDamage].value / 100f;
+
         if (damageType == DamageType.Physical)
         {
             float armor = Mathf.Max(Stats[StatIds.Armor].value - casterStats[StatIds.ArmorPenetration].value, 0f);
@@ -70,7 +89,7 @@ public abstract class Unit : Slotable, ICloneable
             damage *= 1f - (armorReduction / 100f);
         }
 
-        Globals.floatingDamagesManager.CreateFloatingDamage(CurrentSlot.transform.position, Mathf.RoundToInt(damage), FloatingDamageType.AutoDamage, false);
+        Globals.floatingDamagesManager.CreateFloatingDamage(CurrentSlot.transform.position, Mathf.RoundToInt(damage), FloatingDamageType.AutoDamage, isCrit);
         Stats[StatIds.CurrentHP].value -= damage;
         if (Stats[StatIds.CurrentHP].value <= 0)
             Die();
