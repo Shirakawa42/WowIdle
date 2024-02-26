@@ -12,13 +12,28 @@ public abstract class Unit : Slotable, ICloneable
     public abstract List<Unit> TargetList { get; }
     public abstract bool IsActive { get; set; }
 
+    public readonly List<Behavior> behaviors = new();
+
     public override int Level
     {
         get => (int)Stats[StatIds.Level].value;
         set => Stats[StatIds.Level].value = value;
     }
 
-    public abstract void Tick();
+    public virtual void Tick()
+    {
+        List<Behavior> toRemove = new();
+
+        foreach (Behavior behavior in behaviors)
+        {
+            if (!behavior.Tick())
+                toRemove.Add(behavior);
+        }
+        foreach (Behavior behavior in toRemove)
+            RemoveBehavior(behavior);
+        if (CurrentSlot != null && CurrentSlot.equippedSlot)
+            CurrentSlot.Refresh();
+    }
 
     public override void UpdateBars()
     {
@@ -96,12 +111,18 @@ public abstract class Unit : Slotable, ICloneable
         UpdateBars();
     }
 
-    public abstract void Die();
-
-    public override void SetCurrentSlot(Slot slot)
+    public void AddBehavior(Behavior behavior)
     {
-        CurrentSlot = slot;
+        behaviors.Add(behavior);
     }
+
+    public void RemoveBehavior(Behavior behavior)
+    {
+        behavior.OnRemove();
+        behaviors.Remove(behavior);
+    }
+
+    public abstract void Die();
 
     public abstract object Clone();
 

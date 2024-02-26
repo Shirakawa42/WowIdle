@@ -53,5 +53,10 @@ public class GameManager : MonoBehaviour
         {
             Globals.dungeonManager.StartDungeon(new GreenForest());
         }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            Hero selectedHero = Globals.selectedHero;
+            selectedHero?.AddBehavior(new BehaviorBonus(selectedHero, selectedHero, false, "Flame Shock", "Fire", 5f, .5f, new EffectDamage(10, DamageType.Physical), new EffectDamage(10, DamageType.Physical), null));
+        }
     }
 }

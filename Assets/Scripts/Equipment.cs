@@ -13,7 +13,6 @@ public class Equipment : Slotable, ICloneable
     public override SlotType SlotType { get; set; }
     public override Sprite Icon { get; set; }
     public override string Color { get; set; }
-    public override Slot CurrentSlot { get; set; }
     public override int Level { get; set; }
 
     public Equipment(string name, int itemLevel, SlotType slot, Sprite icon, Rarities rarity, Stats stats, GearMat gearMat = GearMat.None)
@@ -28,7 +27,7 @@ public class Equipment : Slotable, ICloneable
         this.gearMat = gearMat;
     }
 
-    public virtual List<TooltipValue> GetTooltipValues()
+    public override List<TooltipValue> GetTooltipValues()
     {
         string gearType = SlotType.ToString();
         if (gearMat != GearMat.None)
@@ -64,21 +63,6 @@ public class Equipment : Slotable, ICloneable
         equippedUnit.RegenUnit();
         Globals.statsPanelManager.UpdateStats(equippedUnit);
         equippedUnit = null;
-    }
-
-    public override void OnPointerEnter()
-    {
-        Globals.itemTooltipManager.ShowTooltip(GetTooltipValues(), Color, CurrentSlot.GetTopLeftCorner());
-    }
-
-    public override void OnPointerExit()
-    {
-        Globals.itemTooltipManager.HideTooltip();
-    }
-
-    public override void SetCurrentSlot(Slot slot)
-    {
-        CurrentSlot = slot;
     }
 
     public object Clone()

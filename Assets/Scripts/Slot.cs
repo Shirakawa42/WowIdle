@@ -5,7 +5,7 @@ using Stopwatch = System.Diagnostics.Stopwatch;
 using TMPro;
 using UnityEngine.UI;
 
-public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, IBeginDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, IBeginDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerMoveHandler
 {
     public GameObject draggableItem;
     public List<SlotExtra> extras = new();
@@ -16,17 +16,30 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
     public GameObject selectedBorder;
     public TMP_Text levelText = null;
     public GameObject[] disabledOnEnemy = new GameObject[0];
+    public GameObject buffParent;
+    public GameObject debuffParent;
+    public GameObject behaviorSlotPrefab;
 
     private Slotable slotable = null;
     private bool dragging = false;
 
 
-    void Start()
+    void Awake()
     {
         if (slotType == SlotType.Enemy)
         {
             foreach (GameObject obj in disabledOnEnemy)
                 obj.SetActive(false);
+        }
+        if (IsUnitSlot(slotType))
+        {
+            for (int i = 0; i < 16; i++)
+            {
+                GameObject buff = Instantiate(behaviorSlotPrefab, buffParent.transform);
+                GameObject debuff = Instantiate(behaviorSlotPrefab, debuffParent.transform);
+                buff.SetActive(false);
+                debuff.SetActive(false);
+            }
         }
     }
 
@@ -166,12 +179,20 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        slotable?.OnPointerEnter();
+        if (eventData.pointerEnter == gameObject)
+            slotable?.OnPointerEnter();
+    }
+
+    public void OnPointerMove(PointerEventData eventData)
+    {
+        if (eventData.pointerEnter == gameObject)
+            slotable?.OnPointerEnter();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        slotable?.OnPointerExit();
+        if (eventData.pointerEnter == gameObject)
+            slotable?.OnPointerExit();
     }
 
     private readonly Stopwatch clickTimer = new();
@@ -226,6 +247,35 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
     {
         if (!dragging)
             StartCoroutine(MoveTo(targetPosition));
+    }
+
+    public void Refresh()
+    {
+        int buffCount = 0;
+        int debuffCount = 0;
+        foreach (Behavior behavior in (slotable as Unit).behaviors)
+        {
+            if (behavior.IsBuff)
+            {
+                Transform child = buffParent.transform.GetChild(buffCount);
+                child.gameObject.SetActive(true);
+                child.localPosition = new Vector3(0, -buffCount * 25 - 10, 0);
+                child.GetComponent<BehaviorSlot>().SetBehavior(behavior, child.position);
+                buffCount++;
+            }
+            else if (!behavior.IsBuff)
+            {
+                Transform child = debuffParent.transform.GetChild(debuffCount);
+                child.gameObject.SetActive(true);
+                child.localPosition = new Vector3(0, -debuffCount * 25 - 10, 0);
+                child.GetComponent<BehaviorSlot>().SetBehavior(behavior, child.position);
+                debuffCount++;
+            }
+        }
+        for (int i = buffCount; i < 16; i++)
+            buffParent.transform.GetChild(i).gameObject.SetActive(false);
+        for (int i = debuffCount; i < 16; i++)
+            debuffParent.transform.GetChild(i).gameObject.SetActive(false);
     }
 
     private System.Collections.IEnumerator MoveTo(Vector3 targetPosition)

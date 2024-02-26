@@ -10,7 +10,6 @@ public class Enemy : Unit
     public override SlotType SlotType { get; set; }
     public override Sprite Icon { get; set; }
     public override string Color { get; set; }
-    public override Slot CurrentSlot { get; set; }
     public override Stats Stats { get; set; }
     public override Weapon DefaultWeapon { get; }
     public override List<Unit> TargetList { get; }
@@ -41,6 +40,7 @@ public class Enemy : Unit
 
     public override void Tick()
     {
+        base.Tick();
         PickTarget();
         DefaultWeapon.Tick(Target, this);
     }
@@ -75,22 +75,17 @@ public class Enemy : Unit
         return new Enemy(Name, isBoss, Icon.name, Level, DefaultWeapon.damages, DefaultWeapon.cooldown, Stats.GetClonedStats());
     }
 
-    public override void OnPointerEnter()
+    public override void RecalculateUnitStats()
+    {
+        //TODO
+    }
+
+    public override List<TooltipValue> GetTooltipValues()
     {
         List<TooltipValue> tooltipValues = new()
         {
             new TooltipValue(Name, "", ValueType.Name),
         };
-        Globals.itemTooltipManager.ShowTooltip(tooltipValues, Color, CurrentSlot.GetTopLeftCorner());
-    }
-
-    public override void OnPointerExit()
-    {
-        Globals.itemTooltipManager.HideTooltip();
-    }
-
-    public override void RecalculateUnitStats()
-    {
-        //TODO
+        return tooltipValues;
     }
 }

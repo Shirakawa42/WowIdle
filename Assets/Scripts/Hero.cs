@@ -8,7 +8,6 @@ public class Hero : Unit
     public override SlotType SlotType { get; set; }
     public override Sprite Icon { get; set; }
     public override string Color { get; set; }
-    public override Slot CurrentSlot { get; set; }
     public override Stats Stats { get; set; }
     public override Weapon DefaultWeapon { get; }
     public override List<Unit> TargetList { get; }
@@ -31,6 +30,7 @@ public class Hero : Unit
 
     public override void Tick()
     {
+        base.Tick();
         PickTarget();
         Weapon mainHandWeapon = gears.GetMainHandWeapon();
         Weapon offHandWeapon = gears.GetOffHandWeapon();
@@ -132,23 +132,13 @@ public class Hero : Unit
         Globals.dungeonManager.activeHeroes.Remove(this);
     }
 
-    public override void OnPointerEnter()
+    public override List<TooltipValue> GetTooltipValues()
     {
         List<TooltipValue> tooltipValues = new()
         {
             new TooltipValue(Name, "", ValueType.Name),
         };
-        Globals.itemTooltipManager.ShowTooltip(tooltipValues, Color, CurrentSlot.GetTopLeftCorner());
-    }
-
-    public override void OnPointerExit()
-    {
-        Globals.itemTooltipManager.HideTooltip();
-    }
-
-    public override void SetCurrentSlot(Slot slot)
-    {
-        CurrentSlot = slot;
+        return tooltipValues;
     }
 
     public override void OnClick()

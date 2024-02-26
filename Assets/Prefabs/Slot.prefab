@@ -71,6 +71,10 @@ MonoBehaviour:
   id: 0
   selectedBorder: {fileID: 3427225174409425481}
   levelText: {fileID: 8075467725196374468}
+  disabledOnEnemy: []
+  buffParent: {fileID: 0}
+  debuffParent: {fileID: 0}
+  behaviorSlotPrefab: {fileID: 0}
 --- !u!114 &4596540825732783260
 MonoBehaviour:
   m_ObjectHideFlags: 0
