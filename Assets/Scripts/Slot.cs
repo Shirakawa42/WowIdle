@@ -18,7 +18,9 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
     public GameObject[] disabledOnEnemy = new GameObject[0];
     public GameObject buffParent;
     public GameObject debuffParent;
+    public GameObject abilityParent;
     public GameObject behaviorSlotPrefab;
+    public GameObject abilitySlotPrefab;
 
     private Slotable slotable = null;
     private bool dragging = false;
@@ -31,7 +33,7 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
             foreach (GameObject obj in disabledOnEnemy)
                 obj.SetActive(false);
         }
-        if (IsUnitSlot(slotType))
+        if (IsUnitSlot(slotType) && equippedSlot)
         {
             for (int i = 0; i < 16; i++)
             {
@@ -39,6 +41,11 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
                 GameObject debuff = Instantiate(behaviorSlotPrefab, debuffParent.transform);
                 buff.SetActive(false);
                 debuff.SetActive(false);
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                GameObject ability = Instantiate(abilitySlotPrefab, abilityParent.transform);
+                ability.SetActive(false);
             }
         }
     }
@@ -68,7 +75,6 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
             draggableItem.SetActive(true);
             foreach (Image image in coloredImages)
                 image.color = ColorUtils.GetColorFromHex(newslotable.Color);
-            slotable.UpdateBars();
         }
         return oldSlotable;
     }
@@ -249,7 +255,7 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
             StartCoroutine(MoveTo(targetPosition));
     }
 
-    public void Refresh()
+    private void RefreshBehaviors()
     {
         int buffCount = 0;
         int debuffCount = 0;
@@ -276,6 +282,28 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
             buffParent.transform.GetChild(i).gameObject.SetActive(false);
         for (int i = debuffCount; i < 16; i++)
             debuffParent.transform.GetChild(i).gameObject.SetActive(false);
+    }
+
+    private void RefreshAbilities()
+    {
+        int abilityCount = 0;
+        int totalAbilities = (slotable as Unit).abilities.Count;
+        foreach (Ability ability in (slotable as Unit).abilities)
+        {
+            Transform child = abilityParent.transform.GetChild(abilityCount);
+            child.gameObject.SetActive(true);
+            child.localPosition = new Vector3(-25 * (totalAbilities - 1) / 2 + 25 * abilityCount, 0, 0);
+            child.GetComponent<AbilitySlot>().SetAbility(ability, child.position);
+            abilityCount++;
+        }
+        for (int i = abilityCount; i < 8; i++)
+            abilityParent.transform.GetChild(i).gameObject.SetActive(false);
+    }
+
+    public void Refresh()
+    {
+        RefreshBehaviors();
+        RefreshAbilities();
     }
 
     private System.Collections.IEnumerator MoveTo(Vector3 targetPosition)

@@ -75,13 +75,11 @@ public class Hero : Unit
             gears.GetMainHandWeapon()?.SetCalculatedDamages(Stats[StatIds.MainHandDamage].value);
             gears.GetOffHandWeapon()?.SetCalculatedDamages(Stats[StatIds.OffHandDamage].value);
         }
-        UpdateBars();
     }
 
     public override void Die()
     {
         RegenUnit(true);
-        UpdateBars();
     }
 
     private void LevelUp()
@@ -115,7 +113,6 @@ public class Hero : Unit
             return;
         Stats[StatIds.Experience].value += xp;
         CheckLevelUp();
-        UpdateBars();
     }
 
     public override void OnEquip()
@@ -145,6 +142,7 @@ public class Hero : Unit
     {
         if (Globals.selectedHero == this)
             return;
+
 
         Globals.selectedHero = this;
         Globals.statsPanelManager.UpdateStats(this);

@@ -13,6 +13,7 @@ public abstract class Unit : Slotable, ICloneable
     public abstract bool IsActive { get; set; }
 
     public readonly List<Behavior> behaviors = new();
+    public readonly List<Ability> abilities = new();
 
     public override int Level
     {
@@ -31,8 +32,11 @@ public abstract class Unit : Slotable, ICloneable
         }
         foreach (Behavior behavior in toRemove)
             RemoveBehavior(behavior);
+        foreach (Ability ability in abilities)
+            ability.Tick();
         if (CurrentSlot != null && CurrentSlot.equippedSlot)
             CurrentSlot.Refresh();
+        UpdateBars();
     }
 
     public override void UpdateBars()
@@ -68,12 +72,10 @@ public abstract class Unit : Slotable, ICloneable
             Stats[StatIds.CurrentMana].value = Stats[StatIds.Mana].value;
         if (!force && IsActive == true)
         {
-            UpdateBars();
             return;
         }
         Stats[StatIds.CurrentHP].value = Stats[StatIds.HP].value;
         Stats[StatIds.CurrentMana].value = Stats[StatIds.Mana].value;
-        UpdateBars();
     }
 
     public void TakeDamage(float damage, DamageType damageType, Stats casterStats)
@@ -108,7 +110,6 @@ public abstract class Unit : Slotable, ICloneable
         Stats[StatIds.CurrentHP].value -= damage;
         if (Stats[StatIds.CurrentHP].value <= 0)
             Die();
-        UpdateBars();
     }
 
     public void AddBehavior(Behavior behavior)
@@ -120,6 +121,25 @@ public abstract class Unit : Slotable, ICloneable
     {
         behavior.OnRemove();
         behaviors.Remove(behavior);
+    }
+
+    public void AddAbility(Ability ability)
+    {
+        ability.Owner = this;
+        abilities.Add(ability);
+    }
+
+    public void RemoveAbility(Ability ability)
+    {
+        abilities.Remove(ability);
+    }
+
+    public bool UseMana(float manaCost)
+    {
+        if (Stats[StatIds.CurrentMana].value < manaCost)
+            return false;
+        Stats[StatIds.CurrentMana].value -= manaCost;
+        return true;
     }
 
     public abstract void Die();

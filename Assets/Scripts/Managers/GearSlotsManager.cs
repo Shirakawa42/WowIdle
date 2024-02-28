@@ -20,6 +20,7 @@ public class GearSlotsManager : MonoBehaviour
         EnableGearSlots(currentGears != null);
         for (int i = 0; i < gearSlots.Length; i++)
         {
+            gearSlots[i].EmptySlot(true);
             gearSlots[i].SetSlotable(gears.GetEquipment(i), true);
         }
         heroName.text = name;

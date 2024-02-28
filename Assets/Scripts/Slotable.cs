@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class Slotable : Hoverable
@@ -7,7 +8,11 @@ public abstract class Slotable : Hoverable
     public abstract int Level { get; set; }
 
     public Slot CurrentSlot { get; set; }
-    public override Vector3 TooltipPosition { get; set; }
+    public override Vector3 TooltipPosition
+    {
+        get => (CurrentSlot == null) ? Vector3.zero : CurrentSlot.GetTopLeftCorner();
+        set => TooltipPosition = value;
+    }
 
     public abstract void OnEquip();
     public abstract void OnUnequip();
@@ -17,7 +22,6 @@ public abstract class Slotable : Hoverable
     public void SetCurrentSlot(Slot slot)
     {
         CurrentSlot = slot;
-        TooltipPosition = slot.GetTopLeftCorner();
     }
 
 }

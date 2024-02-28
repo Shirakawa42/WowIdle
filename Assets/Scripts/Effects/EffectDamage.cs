@@ -11,7 +11,7 @@ public class EffectDamage : Effect
 
     public override void Apply(Unit caster, Unit target)
     {
-        target.TakeDamage(damage, damageType, caster.Stats);
+        target?.TakeDamage(damage, damageType, caster.Stats);
     }
 
     public override object Clone()
