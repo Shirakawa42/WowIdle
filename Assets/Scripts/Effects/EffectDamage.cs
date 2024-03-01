@@ -11,7 +11,7 @@ public class EffectDamage : Effect
 
     public override void Apply(Unit caster, Unit target)
     {
-        target?.TakeDamage(damage, damageType, caster.Stats);
+        target?.TakeDamage(GetDamages(caster.Stats), damageType, caster.Stats);
     }
 
     public override object Clone()
@@ -22,5 +22,10 @@ public class EffectDamage : Effect
     public override string GetDescription()
     {
         return damage.ToString() + " " + damageType.ToString() + " damages";
+    }
+
+    public float GetDamages(Stats stats)
+    {
+        return CalcUtils.GetCalculatedDamage(damage, damageType, stats);
     }
 }

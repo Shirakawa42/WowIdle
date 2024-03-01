@@ -86,6 +86,15 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
         slotable = null;
         draggableItem.SetActive(false);
         EnableExtras(false);
+        if (buffParent != null)
+            foreach (Transform child in buffParent.transform)
+                child.gameObject.SetActive(false);
+        if (debuffParent != null)
+            foreach (Transform child in debuffParent.transform)
+                child.gameObject.SetActive(false);
+        if (abilityParent != null)
+            foreach (Transform child in abilityParent.transform)
+                child.gameObject.SetActive(false);
     }
 
     public Vector2 GetTopLeftCorner()
@@ -164,16 +173,11 @@ public class Slot : MonoBehaviour, IDropHandler, IEndDragHandler, IDragHandler, 
         Slotable newSlotable = droppedSlot.slotable;
         Slotable oldSlotable = slotable;
 
-        bool dontUnequip = false;
-        bool dontEquip = false;
-        if (equippedSlot && droppedSlot.equippedSlot && slotType == SlotType.Hero)
-            dontUnequip = dontEquip = true;
+        droppedSlot.EmptySlot();
+        EmptySlot();
 
-        droppedSlot.EmptySlot(dontUnequip);
-        EmptySlot(dontUnequip);
-
-        droppedSlot.SetSlotable(oldSlotable, dontEquip);
-        SetSlotable(newSlotable, dontEquip);
+        droppedSlot.SetSlotable(oldSlotable);
+        SetSlotable(newSlotable);
     }
 
     public void OnEndDrag(PointerEventData eventData)

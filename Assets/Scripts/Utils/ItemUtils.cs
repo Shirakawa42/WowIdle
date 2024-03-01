@@ -63,9 +63,9 @@ public static class ItemUtils
         {
             float weaponSpeed = (float)Math.Round(Random.Range(0.5f, 2f), 2);
             WeaponType weaponType = GenerateRandomWeaponType();
-            float damages = Mathf.Round(itemLevel * weaponSpeed * Mathf.Pow(Globals.globalExponentialGrowth, itemLevel) * StatsRatioBySlot(slot));
+            float damages = 3f + Mathf.Round(itemLevel * weaponSpeed * Mathf.Pow(Globals.globalExponentialGrowth, itemLevel) * StatsRatioBySlot(slot));
             if (weaponType == WeaponType.Shield)
-                damages *= .1f;
+                damages *= .25f;
             return new Weapon(
                 GenerateEquipmentName(slot, itemLevel),
                 itemLevel,

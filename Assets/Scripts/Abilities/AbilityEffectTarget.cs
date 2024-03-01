@@ -11,7 +11,7 @@ public class AbilityEffectTarget : Ability
 
     public override void Cast()
     {
-        if (CurrentCooldown <= 0 && Owner.Stats[StatIds.CurrentMana].value >= ManaCost)
+        if (CurrentCooldown <= 0 && Owner.Stats[StatIds.CurrentMana].value >= ManaCost && Owner.Target != null)
         {
             Color = "#FF0000";
             effect.Apply(Owner, Owner.Target);
@@ -27,10 +27,12 @@ public class AbilityEffectTarget : Ability
 
     public override List<TooltipValue> GetTooltipValues()
     {
+        string description = Description.Replace("$D", (effect as EffectDamage).GetDamages(Owner.Stats).ToString());
+
         return new List<TooltipValue>
         {
             new(Name, "", ValueType.Name),
-            new(Description, "", ValueType.Description),
+            new(description, "", ValueType.Description),
             new("Cooldown", Cooldown.ToString(), ValueType.SecondaryStat),
             new("Mana Cost", ManaCost.ToString(), ValueType.Mana)
         };

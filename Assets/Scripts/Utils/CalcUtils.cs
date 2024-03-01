@@ -28,4 +28,13 @@ public static class CalcUtils
     {
         return armor / (armor + (240f*(level * Mathf.Pow(Globals.globalExponentialGrowth, level*2f)))) * 100f;
     }
+
+    public static float GetCalculatedDamage(float damage, DamageType damageType, Stats stats)
+    {
+        if (damageType == DamageType.Physical)
+            return damage + (stats[StatIds.Strength].value / 10f);
+        else if (damageType == DamageType.Fire)
+            return damage + (stats[StatIds.Intelligence].value / 10f);
+        return damage;
+    }
 }

@@ -37,6 +37,7 @@ public abstract class Ability : Hoverable, ICloneable
         else
         {
             Color = "#00FF00";
+            Cast();
         }
     }
 

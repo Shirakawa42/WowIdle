@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
             "Jojo",
             UnitClasses.Shaman
         ));
+        shirah.AddAbility(AbilityList.GetAbility(AbilityIds.Stormstrike));
     }
 
     void Update() {
@@ -57,16 +58,6 @@ public class GameManager : MonoBehaviour
         {
             Hero selectedHero = Globals.selectedHero;
             selectedHero?.AddBehavior(new BehaviorBonus(selectedHero, selectedHero, false, "Flame Shock", "Fire", 5f, .5f, new EffectDamage(10, DamageType.Physical), new EffectDamage(10, DamageType.Physical), null));
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Hero selectedHero = Globals.selectedHero;
-            selectedHero?.AddAbility(AbilityList.GetAbility(AbilityIds.Stormstrike));
-        }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            Hero selectedHero = Globals.selectedHero;
-            selectedHero?.abilities[0].Cast();
         }
     }
 }
